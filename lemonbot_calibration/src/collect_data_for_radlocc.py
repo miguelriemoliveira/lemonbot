@@ -81,9 +81,9 @@ if __name__ == "__main__":
     #---------------------------------------
     #--- Argument parser
     #---------------------------------------
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-p", "--capture_path", help = "path to the capture folder", default = ".")
-    args = vars(ap.parse_args())
+    #ap = argparse.ArgumentParser()
+    #ap.add_argument("-p", "--capture_path", help = "path to the capture folder", default = ".")
+    #args = vars(ap.parse_args())
    
     #---------------------------------------
     #--- Intitialization
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
     rospy.sleep(rospy.Duration(0.1)) #time for the tf listener to receive some transforms
    
-    rate = rospy.Rate(100) # 10hz
+    rate = rospy.Rate(100) # 100hz
     count = 0
 
     while not rospy.is_shutdown():
