@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<!--This xacro contains six xacro propperties representing a transformation obtained through calibration-->
+<!--Calibration generated at 22:45:50, 10/05/2017 -->
+<!--This file was written automatically using the "rosrun zubot_calibration store_calibration" command. -->
+<xacro:property name="roll" value="-0.00862075119387"/>
+<xacro:property name="pitch" value="-0.151075296193"/>
+<xacro:property name="yaw" value="-0.0225961345799"/>
+<xacro:property name="x" value="-0.0114425893265"/>
+<xacro:property name="y" value="0.0142780064803"/>
+<xacro:property name="z" value="0.106949831738"/>
+</robot>
