@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="usb_device" default="/dev/ttyUSB0"/>
+  <arg name="usb_device" default="/dev/ttyUSB1"/>
   <!--Launch the PTU D46 driver-->
   <node name="ptu" pkg="flir_pantilt_d46" type="ptu_d46" output="screen">
     <param name="port" value="$(arg usb_device)"/>
