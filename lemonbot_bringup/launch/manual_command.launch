@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+    <!--Launch joint_state_publisher propperly configured for commanding the blackbot ptu-->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen" required="true">
+      <remap from="/joint_states" to="/ptu/cmd"/>
+      <param name="use_gui" value="true"/>
+      <param name="publish_default_velocities" value="true"/>
+    </node>
+</launch>
