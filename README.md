@@ -1,13 +1,13 @@
 # lemonbot
 Drivers for the Lemon Bot hardware platform.
 
-# 
+# Bringup the system 
+
+    roslaunch lemonbot_bringup all.launch
 
 # Control the PTU using the terminal
 
-Bringup the system
-
-    roslaunch lemonbot_bringup all.launch
+Bringup the system, see (put a link to the section here)  
 
 and now request a new position
 
