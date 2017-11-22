@@ -7,7 +7,7 @@ Drivers for the Lemon Bot hardware platform.
 
 # Control the PTU using the terminal
 
-Bringup the system, see (put a link to the section here)  
+Bringup the system, see [this section](# Bringup the system)
 
 and now request a new position
 
