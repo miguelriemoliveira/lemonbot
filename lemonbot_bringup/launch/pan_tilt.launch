@@ -7,7 +7,7 @@
   </node>
   <!--Launch the action server-->
   <node name="ptu_action_server" pkg="flir_pantilt_d46" type="ptu_action_server.py" output="screen">
-    <remap from="cmd" to="/ptu/cmd"/>
-    <remap from="state" to="/ptu/state"/>
+  <remap from="cmd" to="/ptu/cmd"/>
+  <remap from="state" to="/ptu/state"/>
   </node>
 </launch>

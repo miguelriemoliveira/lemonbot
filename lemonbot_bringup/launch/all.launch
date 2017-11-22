@@ -3,21 +3,9 @@
   <arg name="calibrated" default="true"/>
   <arg name="manual_command" default="false"/>
   <arg name="calibration_file" default="$(find lemonbot_calibration)/calibration/hand_in_eye.urdf.xacro"/>
-  <!--uncalibrated system: because the system is not calibrated, we cannot have a single robot state publisher with a disconnected tree. The solution is to launch a second robot state publisher using the camera xacro only-->
-  <group unless="$(arg calibrated)">
-    <!--pan and tilt robot description parameter-->
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find lemonbot_description)/urdf/only_pan_tilt_system.urdf.xacro'"/>
-    <!--pan and tilt robot state publisher-->
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" required="true">
-      <remap from="/joint_states" to="/ptu/state"/>
-    </node>
-    <!--camera robot_description parameter-->
-    <param name="robot_description_for_camera" command="$(find xacro)/xacro.py '$(find lemonbot_description)/urdf/only_camera_system.urdf.xacro'"/>
-    <node name="robot_state_publisher_for_camera" pkg="robot_state_publisher" type="state_publisher">
-      <remap from="robot_description" to="robot_description_for_camera"/>
-    </node>
-  </group>
-  <!--Calibrated system: when using the calibrated system we use a xacro which already contains both the pan and tilt as well as the camera description, as well as the transform between them (obtained from the calibration). In this case, the camera driver does not need to publish the camera transforms.-->
+
+
+
   <group if="$(arg calibrated)">
     <!--In this case there is only one robot_description parameter-->
     <param name="robot_description" command="$(find xacro)/xacro.py '$(find lemonbot_description)/urdf/calibrated_system.urdf.xacro' calibration_file:=$(arg calibration_file)"/>
@@ -35,4 +23,43 @@
   <group if="$(arg manual_command)">
     <include file="$(find lemonbot_bringup)/launch/manual_command.launch"/>
   </group>
+
+
+
+
+
+  <!--uncalibrated system: because the system is not calibrated, we cannot have a single robot state publisher with a disconnected tree. The solution is to launch a second robot state publisher using the camera xacro only-->
+  <!--<group unless="$(arg calibrated)">-->
+    <!--[>pan and tilt robot description parameter<]-->
+    <!--<param name="robot_description" command="$(find xacro)/xacro.py '$(find lemonbot_description)/urdf/only_pan_tilt_system.urdf.xacro'"/>-->
+    <!--[>pan and tilt robot state publisher<]-->
+    <!--<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" required="true">-->
+      <!--<remap from="/joint_states" to="/ptu/state"/>-->
+    <!--</node>-->
+    <!--[>camera robot_description parameter<]-->
+    <!--<param name="robot_description_for_camera" command="$(find xacro)/xacro.py '$(find lemonbot_description)/urdf/only_camera_system.urdf.xacro'"/>-->
+    <!--<node name="robot_state_publisher_for_camera" pkg="robot_state_publisher" type="state_publisher">-->
+      <!--<remap from="robot_description" to="robot_description_for_camera"/>-->
+    <!--</node>-->
+  <!--</group>-->
+  <!--[>Calibrated system: when using the calibrated system we use a xacro which already contains both the pan and tilt as well as the camera description, as well as the transform between them (obtained from the calibration). In this case, the camera driver does not need to publish the camera transforms.<]-->
+  <!--<group if="$(arg calibrated)">-->
+    <!--[>In this case there is only one robot_description parameter<]-->
+    <!--<param name="robot_description" command="$(find xacro)/xacro.py '$(find lemonbot_description)/urdf/calibrated_system.urdf.xacro' calibration_file:=$(arg calibration_file)"/>-->
+    <!--[>Start the (only) robot state publisher<]-->
+    <!--<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" required="true">-->
+      <!--<remap from="/joint_states" to="/ptu/state"/>-->
+    <!--</node>-->
+  <!--</group>-->
+  <!--[>Start the pan and tilt drivers<]-->
+  <!--<include file="$(find lemonbot_bringup)/launch/pan_tilt.launch"/>-->
+  <!--[>Start the camera drivers<]-->
+  <!--<include file="$(find lemonbot_bringup)/launch/camera.launch">-->
+    <!--</include>-->
+  <!--[>Start manual control<]-->
+  <!--<group if="$(arg manual_command)">-->
+    <!--<include file="$(find lemonbot_bringup)/launch/manual_command.launch"/>-->
+  <!--</group>-->
+
+
 </launch>

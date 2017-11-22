@@ -6,10 +6,9 @@
   <!--Include the xacro generated from the calibration-->
   <xacro:include filename="$(arg calibration_file)"/>
   <!-- include the description of the road narrows pan and tilt -->
-  <xacro:include filename="$(find blackbot_description)/urdf/d46.urdf.xacro"/>
+  <xacro:include filename="$(find lemonbot_description)/urdf/d46.urdf.xacro"/>
   <!--Include a descritpion of the asus camera (from the hector_sensors_description package)-->
-  <!--<xacro:include filename="$(find blackbot_description)/urdf/kinect2.urdf.xacro"/>-->
-  <xacro:include filename="$(find tangerinebot_description)/urdf/asus_camera.urdf.xacro"/>
+  <xacro:include filename="$(find lemonbot_description)/urdf/asus_camera.urdf.xacro"/>
   <!--Create a rnr_pan_tilt instance -->
   <xacro:ptu_d46 name="ptu"/>
   <!--Create the_camera instance, giving as input arguments the values for the estimated transformation-->
