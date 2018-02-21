@@ -1,8 +1,16 @@
 <?xml version="1.0"?>
+<<<<<<< HEAD
 <launch>
   <arg name="calibrated" default="true"/>
   <arg name="manual_command" default="false"/>
   <arg name="calibration_file" default="$(find lemonbot_calibration)/calibration/hand_in_eye.urdf.xacro"/>
+=======
+<launch> 
+  <arg name="calibrated" default="true"/>
+  <arg name="manual_command" default="false"/>
+  <arg name="calibration_file" default="$(find lemonbot_calibration)/calibration/hand_in_eye.urdf.xacro"/>
+
+>>>>>>> 4d3bf240e1c6bcaad9e34d94af53781f8f6f19e1
   <!--uncalibrated system: because the system is not calibrated, we cannot have a single robot state publisher with a disconnected tree. The solution is to launch a second robot state publisher using the camera xacro only-->
   <group unless="$(arg calibrated)">
     <!--pan and tilt robot description parameter-->
@@ -30,13 +38,22 @@
   <include file="$(find lemonbot_bringup)/launch/pan_tilt.launch"/>
   <!--Start the camera drivers-->
   <include file="$(find lemonbot_bringup)/launch/camera.launch">
+<<<<<<< HEAD
 </include>
+=======
+    </include>
+>>>>>>> 4d3bf240e1c6bcaad9e34d94af53781f8f6f19e1
   <!--Start manual control-->
   <group if="$(arg manual_command)">
     <include file="$(find lemonbot_bringup)/launch/manual_command.launch"/>
   </group>
+<<<<<<< HEAD
   <!--Laser drivers-->
   <node name="sicks300_driver" pkg="sicks300" type="sick300_driver">
     <param name="devicename" value="/dev/ttyUSB0"/>
   </node>
+=======
+
+
+>>>>>>> 4d3bf240e1c6bcaad9e34d94af53781f8f6f19e1
 </launch>
