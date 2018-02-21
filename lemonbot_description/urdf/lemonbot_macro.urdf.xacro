@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot 
+    xmlns:xacro="http://ros.org/wiki/xacro">
+    <!-- include all the dependencies -->
+    <!-- include asus_camera macro from hector_sensors_description -->
+    <xacro:include filename="$(find hector_sensors_description)/urdf/asus_camera.urdf.xacro"/>
+    <!-- include ptu_d46 macro from flir_ptu_description -->
+    <xacro:include filename="$(find flir_ptu_description)/urdf/d46.urdf.xacro" />
+    <!-- include sick lms1xx macro from lms1xx -->
+    <xacro:include filename="$(find lms1xx)/urdf/sick_lms1xx.urdf.xacro" />
+    <!-- main lemonbot macro -->
+    <xacro:macro name="lemonbot" params="prefix">
+        <!-- links -->
+        <!-- link: lemonbot_base_link -->
+        <link name="${prefix}_base_link" />
+        <!-- link: lemonbot_camera_mount_link -->
+        <link name="${prefix}_camera_mount_link" />
+        <!-- macros -->
+        <!-- macro: ptu_d46 -->
+        <xacro:ptu_d46 name="${prefix}_ptu" />
+        <!-- macro: asus_camera -->
+        <xacro:asus_camera name="${prefix}_camera" parent="${prefix}_camera_mount_link">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </xacro:asus_camera>
+        <!-- macro: sick_lms1xx -->
+        <xacro:sick_lms1xx frame="${prefix}_laser_optical_frame" />
+        <!-- joints -->
+        <!-- joint: base_link to ptu_joint -->
+        <joint name="${prefix}_base_link_to_ptu_joint" type="fixed">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <parent link="${prefix}_base_link" />
+            <child link="${prefix}_ptu_base_link" />
+        </joint>
+        <!-- joint: ptu_mount_link to camera_mount -->
+        <joint name="{prefix}_ptu_mount_link_to_camera_mount_link_joint" type="fixed">
+            <origin xyz="0.03 -0.1 0.1" rpy="-1.57 0 0" />
+            <parent link="${prefix}_ptu_mount_link" />
+            <child link="${prefix}_camera_mount_link" />
+        </joint>
+        <!-- joint: ptu_mount_link to laser_optical_frame  -->
+        <joint name="{prefix}_ptu_mount_link_to_laser_optical_frame" type="fixed">
+            <origin xyz="0 -0.05 0.1" rpy="1.57 -1.57 0" />
+            <parent link="${prefix}_ptu_mount_link" />
+            <child link="${prefix}_laser_optical_frame" />
+        </joint>
+    </xacro:macro>
+</robot>

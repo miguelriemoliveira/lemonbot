@@ -1,24 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-  <!--TODO: add a required true functionality-->
-  <arg name="publish_tf" default="false"/>
-  <rosparam>
-    /camera/driver/ir_mode: 5
-    <!--/camera/driver/color_mode: 1 this is for 1280x1024-->
-    /camera/driver/color_mode: 5
-    /camera/driver/depth_mode: 5
-    /camera/driver/data_skip: 3
-  </rosparam>
-  <!--For now just launch the openni2 driver with default parameters-->
-  <include file="$(find openni2_launch)/launch/openni2.launch">
-    <arg name="publish_tf" value="$(arg publish_tf)"/>
-    <arg name="depth_registration" value="true"/>
-  </include>
-  <!--Relay topics from asus format to kinect2 format-->
-  <!--This is to handle the naming inconsistency form the openni2 drivers to the iai kinec2 drivers-->
-  <node pkg="topic_tools" type="relay" name="relay_rgb" args="/camera/rgb/image_rect_color /camera/hd/image_color_rect" output="screen"/>
-  <node pkg="topic_tools" type="relay" name="relay_depth" args="/camera/depth/image_rect /camera/hd/image_depth_rect" output="screen"/>
-  <node pkg="topic_tools" type="relay" name="relay_rgb_camera_info" args="/camera/rgb/camera_info /camera/hd/camera_info" output="screen"/>
-  <!--<node name="relay_points" pkg="topic_tools" type="relay" args="/camera/depth_registered/points /camera/hd/points" output="screen" required="true">-->
-    <!--</node>-->
+    <arg name="name" default="lemonbot_camera" />
+    <include file="$(find openni2_launch)/launch/openni2.launch">
+        <arg name="camera" value="name" />
+        <arg name="depth_registration" value="true" />
+    </include>
 </launch>

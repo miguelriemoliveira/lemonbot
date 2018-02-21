@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="port" default="/dev/ttyUSB0" />
+    <node pkg="sicks300" type="sick300_driver" name="laser">
+        <param name="devicename" value="$(arg port)" />
+    </node>
+</launch>
