@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-<<<<<<< HEAD
     <arg name="port" default="/dev/ttyUSB0" />
     <node name="ptu" pkg="flir_pantilt_d46" type="ptu_d46" output="screen">
         <param name="port" value="$(arg port)" />
@@ -9,16 +8,4 @@
         <remap from="cmd" to="/ptu/cmd"/>
         <remap from="state" to="/ptu/state"/>
     </node>
-=======
-  <arg name="usb_device" default="/dev/ttyUSB1"/>
-  <!--Launch the PTU D46 driver-->
-  <node name="ptu" pkg="flir_pantilt_d46" type="ptu_d46" output="screen">
-    <param name="port" value="$(arg usb_device)"/>
-  </node>
-  <!--Launch the action server-->
-  <node name="ptu_action_server" pkg="flir_pantilt_d46" type="ptu_action_server.py" output="screen">
-  <remap from="cmd" to="/ptu/cmd"/>
-  <remap from="state" to="/ptu/state"/>
-  </node>
->>>>>>> 4d3bf240e1c6bcaad9e34d94af53781f8f6f19e1
 </launch>

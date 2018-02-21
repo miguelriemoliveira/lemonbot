@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <launch>
     <param name="use_gui" value="true"/>
-    <include file="$(find lemonbot_bringup)/launch/load_urdf.launch">
-        <arg name="calibrated" value="true" />
-    </include>
+    <include file="$(find lemonbot_bringup)/launch/load_urdf.launch" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
-    <node name="rviz" pkg="rviz" type="rviz" args="--display-config $(find lemonbot_bringup)/config/visualize.rviz" required="true"></node>
+    <include file="$(find lemonbot_bringup)/launch/visualize.launch" />
 </launch>
