@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <launch>
     <param name="use_gui" value="true"/>
-    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find lemonbot_description)/urdf/lemonbot.urdf.xacro'" />
+    <include file="$(find lemonbot_bringup)/launch/load_urdf.launch">
+        <arg name="calibrated" value="true" />
+    </include>
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
-    <node name="rviz" pkg="rviz" type="rviz" args="--display-config $(find lemonbot_description)/config/visualize.rviz" required="true" />
+    <node name="rviz" pkg="rviz" type="rviz" args="--display-config $(find lemonbot_bringup)/config/visualize.rviz" required="true"></node>
 </launch>

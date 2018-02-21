@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <robot 
-    xmlns:xacro="http://ros.org/wiki/xacro" name="lemonbot">
+    xmlns:xacro="http://www.ros.org/wiki/xacro" name="lemonbot">
+    <xacro:arg name="calibrated" default="false"/>
+    <xacro:arg name="laser_calibration_file" default="$(find lemonbot_calibration)/calibration/camera_calibration.yaml" />
+    <xacro:arg name="camera_calibration_file" default="$(find lemonbot_calibration)/calibration/camera_calibration.yaml" />
     <xacro:include filename="$(find lemonbot_description)/urdf/lemonbot_macro.urdf.xacro"/>
     <xacro:lemonbot prefix="lemonbot" />
 </robot>

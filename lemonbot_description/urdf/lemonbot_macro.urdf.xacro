@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <robot 
-    xmlns:xacro="http://ros.org/wiki/xacro">
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:arg name="calibrated" default="false"/>
+    <xacro:arg name="laser_calibration_file" default="" />
+    <xacro:arg name="camera_calibration_file" default="" />
     <!-- include all the dependencies -->
     <!-- include asus_camera macro from hector_sensors_description -->
     <xacro:include filename="$(find hector_sensors_description)/urdf/asus_camera.urdf.xacro"/>
@@ -8,6 +11,15 @@
     <xacro:include filename="$(find flir_ptu_description)/urdf/d46.urdf.xacro" />
     <!-- include sick lms1xx macro from lms1xx -->
     <xacro:include filename="$(find lms1xx)/urdf/sick_lms1xx.urdf.xacro" />
+    <!-- load calibration -->
+    <xacro:unless value="$(arg calibrated)">
+        <xacro:property name="laser_calibration" value="${dict(xyz = [0, 0, 0], rpy = [0, 0, 0])}" />
+        <xacro:property name="camera_calibration" value="${dict(xyz = [0, 0, 0], rpy = [0, 0, 0])}" />
+    </xacro:unless>
+    <xacro:if value="$(arg calibrated)">
+        <xacro:property name="laser_calibration" value="${load_yaml('$(arg laser_calibration_file)')}" />
+        <xacro:property name="camera_calibration" value="${load_yaml('$(arg camera_calibration_file)')}" />
+    </xacro:if>
     <!-- main lemonbot macro -->
     <xacro:macro name="lemonbot" params="prefix">
         <!-- links -->
@@ -33,13 +45,13 @@
         </joint>
         <!-- joint: ptu_mount_link to camera_mount -->
         <joint name="{prefix}_ptu_mount_link_to_camera_mount_link_joint" type="fixed">
-            <origin xyz="0.03 -0.1 0.1" rpy="-1.57 0 0" />
+            <origin xyz="${camera_calibration['xyz'][0]} ${camera_calibration['xyz'][1]} ${camera_calibration['xyz'][2]}" rpy="${camera_calibration['rpy'][0]} ${camera_calibration['rpy'][1]} ${camera_calibration['rpy'][2]}" />
             <parent link="${prefix}_ptu_mount_link" />
             <child link="${prefix}_camera_mount_link" />
         </joint>
         <!-- joint: ptu_mount_link to laser_optical_frame  -->
         <joint name="{prefix}_ptu_mount_link_to_laser_optical_frame" type="fixed">
-            <origin xyz="0 -0.05 0.1" rpy="1.57 -1.57 0" />
+            <origin xyz="${laser_calibration['xyz'][0]} ${laser_calibration['xyz'][1]} ${laser_calibration['xyz'][2]}" rpy="${laser_calibration['rpy'][0]} ${laser_calibration['rpy'][1]} ${laser_calibration['rpy'][2]}" />
             <parent link="${prefix}_ptu_mount_link" />
             <child link="${prefix}_laser_optical_frame" />
         </joint>
