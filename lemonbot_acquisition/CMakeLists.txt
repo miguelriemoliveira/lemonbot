@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   actionlib
   sensor_msgs
+  laser_assembler
 )
 
 ## System dependencies are found with CMake's conventions

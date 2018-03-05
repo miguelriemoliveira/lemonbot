@@ -3,5 +3,7 @@
     <arg name="port" default="/dev/ttyUSB0" />
     <node pkg="sicks300" type="sick300_driver" name="laser">
         <param name="devicename" value="$(arg port)" />
+        <param name="frame" value="lemonbot_laser_optical_frame" />
+        <param name="send_transform" value="false" />
     </node>
 </launch>

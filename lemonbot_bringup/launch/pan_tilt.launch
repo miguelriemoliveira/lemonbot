@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="port" default="/dev/ttyUSB0" />
+    <arg name="port" default="/dev/ttyUSB1" />
     <node name="ptu" pkg="flir_pantilt_d46" type="ptu_d46" output="screen">
         <param name="port" value="$(arg port)" />
     </node>
@@ -8,4 +8,5 @@
         <remap from="cmd" to="/ptu/cmd"/>
         <remap from="state" to="/ptu/state"/>
     </node>
+    <node name="ptu_remaper" pkg="topic_tools" type="relay" args="/ptu/state /joint_states" />
 </launch>

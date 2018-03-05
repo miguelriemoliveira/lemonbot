@@ -31,9 +31,7 @@
     <!-- macro: ptu_d46 -->
     <xacro:ptu_d46 name="${prefix}_ptu" />
     <!-- macro: asus_camera -->
-    <xacro:asus_camera name="${prefix}_camera" parent="${prefix}_camera_mount_link">
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </xacro:asus_camera>
+    <!-- <xacro:asus_camera name="${prefix}_camera" parent="${prefix}_camera_mount_link"><origin xyz="0 0 0" rpy="0 0 0" /></xacro:asus_camera> -->
     <!-- macro: sick_lms1xx -->
     <xacro:sick_lms1xx frame="${prefix}_laser_optical_frame" />
     <!-- joints -->
