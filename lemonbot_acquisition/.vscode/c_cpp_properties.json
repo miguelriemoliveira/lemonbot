@@ -9,10 +9,12 @@
                     "/opt/ros/kinetic/include",
                     "/home/bl/catkin_ws/src/flir_pantilt_d46/include",
                     "/home/bl/catkin_ws/src/flir_ptu/flir_ptu_driver/include",
+                    "/home/bl/catkin_ws/src/lemonbot/lemonbot_acquisition/include",
                     "/home/bl/catkin_ws/src/lemonbot/lemonbot_commander/include",
+                    "/home/bl/catkin_ws/src/rws2018/rws2018_blourenco/player_blourenco/include",
+                    "/home/bl/catkin_ws/src/rws2018/rws2018_moliveira/rws2018_libs/include",
                     "/home/bl/catkin_ws/src/serial/include",
                     "/home/bl/catkin_ws/src/sicks300/include",
-                    "/home/bl/catkin_ws/src/tutorial/include",
                     "/usr/include"
                 ]
             },
@@ -21,10 +23,12 @@
                 "/opt/ros/kinetic/include",
                 "/home/bl/catkin_ws/src/flir_pantilt_d46/include",
                 "/home/bl/catkin_ws/src/flir_ptu/flir_ptu_driver/include",
+                "/home/bl/catkin_ws/src/lemonbot/lemonbot_acquisition/include",
                 "/home/bl/catkin_ws/src/lemonbot/lemonbot_commander/include",
+                "/home/bl/catkin_ws/src/rws2018/rws2018_blourenco/player_blourenco/include",
+                "/home/bl/catkin_ws/src/rws2018/rws2018_moliveira/rws2018_libs/include",
                 "/home/bl/catkin_ws/src/serial/include",
                 "/home/bl/catkin_ws/src/sicks300/include",
-                "/home/bl/catkin_ws/src/tutorial/include",
                 "/usr/include"
             ],
             "name": "Linux",
