@@ -8,12 +8,14 @@ int main(int argc, char* argv[])
 {
   ros::init(argc, argv, "lemonbot_acquisition_node");
 
-  auto params = AcquisitionNode::Params{ .min = -90, .max = 0, .nsteps = 100, .vel = 10.0f };
+  auto params = AcquisitionNode::Params{.min = -90, .max = 90, .vel = 5.0f };
 
   auto opts = AcquisitionNode::Options{
-    .type = AcquisitionNode::Type::POINT2POINT,
+    .type = AcquisitionNode::Type::CONTINUOUS,
     .ptu_topic = "/SetPTUState",
     .max_vel = 30.0f,
+    .laser_in_topic = "/laserscan",
+    .laser_out_topic = "/capture_laser",
   };
 
   AcquisitionNode node(params, opts);

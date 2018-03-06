@@ -9,6 +9,8 @@
 
 #import <ros/ros.h>
 
+#include <sensor_msgs/LaserScan.h>
+
 #include <actionlib/client/simple_action_client.h>
 
 #include <flir_pantilt_d46/PtuGotoAction.h>
@@ -36,6 +38,8 @@ public:
     Type type = Type::CONTINUOUS;
     ros::Duration timeout = ros::Duration{ 5 };
     std::string ptu_topic;
+    std::string laser_out_topic;
+    std::string laser_in_topic;
     std::chrono::milliseconds pause = std::chrono::milliseconds{ 300 };
   };
   AcquisitionNode(Params params, Options opts);
@@ -55,6 +59,8 @@ private:
   Options _opts;
 
   actionlib::SimpleActionClient<flir_pantilt_d46::PtuGotoAction> _ptu_client;
+
+  ros::Publisher _laser_pub;
 };
 }
 
