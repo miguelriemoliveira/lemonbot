@@ -31,6 +31,10 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "atomic": "cpp",
+        "slist": "cpp",
+        "memory": "cpp",
+        "thread": "cpp"
     }
 }

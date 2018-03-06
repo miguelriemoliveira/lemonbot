@@ -27,33 +27,46 @@ AcquisitionNode::AcquisitionNode(Params params, Options opts)
 
 void AcquisitionNode::start()
 {
-  auto goal = flir_pantilt_d46::PtuGotoGoal{};
-  goal.pan = _params.min;
-  goal.tilt = 0.0f;
-  goal.pan_vel = _opts.max_vel;
-  goal.tilt_vel = 10.0f;
-
-  _ptu_client.sendGoalAndWait(goal);
+  gotoPan(_params.min, _opts.max_vel);
 
   ROS_INFO("Reached minimum position");
 
-  goal.pan_vel = _params.vel;
-
   if (_opts.type == Type::CONTINUOUS)
   {
-    goal.pan = _params.max;
-    _ptu_client.sendGoalAndWait(goal);
+    startContinuous();
   }
   else
   {
-    auto delta = (_params.max - _params.min) / (_params.nsteps - 1);
-    for (int step = 0; step < _params.nsteps; step++)
-    {
-      goal.pan = _params.min + step * delta;
-      _ptu_client.sendGoalAndWait(goal);
-      std::this_thread::sleep_for(_opts.pause);
-    }
+    startPoint2Point();
   }
 
-  ROS_INFO("Reached maximum position");
+  ROS_INFO("Finished this capture");
+}
+
+void AcquisitionNode::startContinuous()
+{
+  gotoPan(_params.max, _params.vel);
+}
+
+void AcquisitionNode::startPoint2Point()
+{
+  auto delta = (_params.max - _params.min) / (_params.nsteps - 1);
+  for (int step = 0; step < _params.nsteps; step++)
+  {
+    auto pan = _params.min + step * delta;
+
+    gotoPan(pan, _params.vel);
+
+    std::this_thread::sleep_for(_opts.pause);
+  }
+}
+
+void AcquisitionNode::gotoPan(float angle, float velocity)
+{
+  auto goal = flir_pantilt_d46::PtuGotoGoal{};
+  goal.pan = angle;
+  goal.tilt = 0.0f;
+  goal.pan_vel = velocity;
+  goal.tilt_vel = 10.0f;
+  _ptu_client.sendGoalAndWait(goal);
 }

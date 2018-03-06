@@ -34,15 +34,20 @@ public:
   {
     float max_vel;
     Type type = Type::CONTINUOUS;
-    ros::Duration timeout;
+    ros::Duration timeout = ros::Duration{ 5 };
     std::string ptu_topic;
-    std::chrono::milliseconds pause;
+    std::chrono::milliseconds pause = std::chrono::milliseconds{ 300 };
   };
   AcquisitionNode(Params params, Options opts);
 
   void start();
 
 protected:
+  void startContinuous();
+  void startPoint2Point();
+
+  void gotoPan(float angle, float velocity);
+
 private:
   ros::NodeHandle _nh;
 
