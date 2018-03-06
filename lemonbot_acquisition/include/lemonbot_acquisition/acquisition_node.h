@@ -43,10 +43,6 @@ public:
   void start();
 
 protected:
-  void atEachPoint();
-  void atBegin();
-  void atEnd();
-
 private:
   ros::NodeHandle _nh;
 

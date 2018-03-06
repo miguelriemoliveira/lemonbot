@@ -39,26 +39,21 @@ void AcquisitionNode::start()
 
   goal.pan_vel = _params.vel;
 
-  auto delta = (_params.max - _params.min) / (_params.nsteps - 1);
-
-  for (int step = 0; step < _params.nsteps; step++)
+  if (_opts.type == Type::CONTINUOUS)
   {
-    goal.pan = _params.min + step * delta;
+    goal.pan = _params.max;
     _ptu_client.sendGoalAndWait(goal);
-    std::this_thread::sleep_for(_opts.pause);
+  }
+  else
+  {
+    auto delta = (_params.max - _params.min) / (_params.nsteps - 1);
+    for (int step = 0; step < _params.nsteps; step++)
+    {
+      goal.pan = _params.min + step * delta;
+      _ptu_client.sendGoalAndWait(goal);
+      std::this_thread::sleep_for(_opts.pause);
+    }
   }
 
   ROS_INFO("Reached maximum position");
-}
-
-void AcquisitionNode::atEachPoint()
-{
-}
-
-void AcquisitionNode::atBegin()
-{
-}
-
-void AcquisitionNode::atEnd()
-{
 }
