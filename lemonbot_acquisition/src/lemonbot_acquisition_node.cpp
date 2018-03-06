@@ -1,7 +1,4 @@
 #include <lemonbot_acquisition/acquisition_node.h>
-#include <lemonbot_acquisition/republishing.h>
-
-#include <std_msgs/Float32.h>
 
 using namespace lemonbot;
 
