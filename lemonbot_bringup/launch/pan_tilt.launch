@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="port" default="/dev/ttyUSB1" />
+    <arg name="port" default="/dev/ttyUSB0" />
     <node name="ptu" pkg="flir_pantilt_d46" type="ptu_d46" output="screen">
         <param name="port" value="$(arg port)" />
     </node>

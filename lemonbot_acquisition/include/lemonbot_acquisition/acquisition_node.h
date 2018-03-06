@@ -1,6 +1,12 @@
 #ifndef LEMONBOT_ACQUISITION_NODE_H
 #define LEMONBOT_ACQUISITION_NODE_H
 
+#include <chrono>
+#include <exception>
+#include <sstream>
+#include <string>
+#include <thread>
+
 #import <ros/ros.h>
 
 #include <actionlib/client/simple_action_client.h>
@@ -12,6 +18,11 @@ namespace lemonbot
 class AcquisitionNode
 {
 public:
+  enum Type
+  {
+    CONTINUOUS,
+    POINT2POINT,
+  };
   struct Params
   {
     float min;     // The minimum angle of pan.
@@ -21,10 +32,13 @@ public:
   };
   struct Options
   {
-    ros::Duration timeout = ros::Duration(30);
-    std::string ptu_topic = "/PtuGoto";
+    float max_vel;
+    Type type = Type::CONTINUOUS;
+    ros::Duration timeout;
+    std::string ptu_topic;
+    std::chrono::milliseconds pause;
   };
-  AcquisitionNode(Params params, Options opts = Options{});
+  AcquisitionNode(Params params, Options opts);
 
   void start();
 
@@ -34,12 +48,12 @@ protected:
   void atEnd();
 
 private:
+  ros::NodeHandle _nh;
+
   Params _params;
   Options _opts;
 
-  ros::NodeHandle _nh;
-  actionlib::SimpleActionClient _ptu_client;
-  flir_pantilt_d46::PtuGotoGoal _goal;
+  actionlib::SimpleActionClient<flir_pantilt_d46::PtuGotoAction> _ptu_client;
 };
 }
 
