@@ -1,4 +1,5 @@
 #include <lemonbot_acquisition/acquisition_node.h>
+#include <lemonbot_acquisition/republishing.h>
 
 using namespace lemonbot;
 using namespace std;
@@ -63,9 +64,7 @@ void AcquisitionNode::startPoint2Point()
 
     gotoPan(pan, _params.vel);
 
-    auto laser_scan = ros::topic::waitForMessage<sensor_msgs::LaserScan>(_opts.laser_in_topic);
-
-    _laser_pub.publish(laser_scan);
+    republish<sensor_msgs::LaserScan>(_opts.laser_in_topic, _laser_pub);
 
     std::this_thread::sleep_for(_opts.pause);
   }
