@@ -1,8 +1,3 @@
 <launch>
-    <node type="laser_scan_assembler" pkg="laser_assembler" name="my_assembler">
-        <remap from="scan" to="/laserscan"/>
-        <param name="max_scans" type="int" value="400" />
-        <param name="fixed_frame" type="string" value="lemonbot_base_link" />
-    </node>
     <node type="lemonbot_acquisition_node" pkg="lemonbot_acquisition" name="commander"></node>
 </launch>
