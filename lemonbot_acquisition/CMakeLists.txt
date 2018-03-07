@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   actionlib
   sensor_msgs
-  laser_assembler
+  pcl_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -149,6 +149,17 @@ target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
 )
 
+<<<<<<< HEAD
+=======
+add_executable(laser_projector
+ src/laser_projector.cpp
+)
+
+
+target_link_libraries(laser_projector
+  ${catkin_LIBRARIES}
+)
+>>>>>>> 672461664a5e812de71697f2f1cc333609a75997
 
 
 ## Rename C++ executable without prefix
