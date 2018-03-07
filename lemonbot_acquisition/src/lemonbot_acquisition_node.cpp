@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
   ros::init(argc, argv, "lemonbot_acquisition_node");
 
-  auto params = AcquisitionNode::Params{ .min = -90, .max = 90, .vel = 5.0f };
+  auto params = AcquisitionNode::Params{.min = -90, .max = 90, .vel = 3.0f };
 
   auto opts = AcquisitionNode::Options{
     .type = AcquisitionNode::Type::CONTINUOUS,
@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     .laser_out_topic = "/capture_laser",
   };
 
-  auto node = AcquisitionNode{ params, opts };
+  AcquisitionNode node(params, opts);
 
   node.start();
 

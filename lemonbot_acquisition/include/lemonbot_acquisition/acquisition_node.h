@@ -15,6 +15,9 @@
 
 #include <flir_pantilt_d46/PtuGotoAction.h>
 
+#include <lemonbot_acquisition/passthrough.h>
+#include <lemonbot_acquisition/republishing.h>
+
 namespace lemonbot
 {
 class AcquisitionNode
@@ -59,8 +62,6 @@ private:
   Options _opts;
 
   actionlib::SimpleActionClient<flir_pantilt_d46::PtuGotoAction> _ptu_client;
-
-  ros::Publisher _laser_pub;
 };
 }
 

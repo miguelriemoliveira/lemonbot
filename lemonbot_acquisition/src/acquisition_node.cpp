@@ -1,14 +1,10 @@
 #include <lemonbot_acquisition/acquisition_node.h>
-#include <lemonbot_acquisition/republishing.h>
 
 using namespace lemonbot;
 using namespace std;
 
 AcquisitionNode::AcquisitionNode(Params params, Options opts)
-  : _params(params)
-  , _opts(opts)
-  , _ptu_client(opts.ptu_topic, true)
-  , _laser_pub(_nh.advertise<sensor_msgs::LaserScan>(_opts.laser_out_topic, 10))
+  : _params(params), _opts(opts), _ptu_client(opts.ptu_topic, true)
 {
   ostringstream info;
 
@@ -49,8 +45,7 @@ void AcquisitionNode::start()
 
 void AcquisitionNode::startContinuous()
 {
-  auto sub = _nh.subscribe<sensor_msgs::LaserScan>(
-      _opts.laser_in_topic, 10, [&](const sensor_msgs::LaserScanConstPtr& ls) { _laser_pub.publish(ls); });
+  auto passthrough = Passthrough<sensor_msgs::LaserScan>(_opts.laser_in_topic, _opts.laser_out_topic);
 
   gotoPan(_params.max, _params.vel);
 }
@@ -64,7 +59,9 @@ void AcquisitionNode::startPoint2Point()
 
     gotoPan(pan, _params.vel);
 
-    republish<sensor_msgs::LaserScan>(_opts.laser_in_topic, _laser_pub);
+    auto laser_pub = _nh.advertise<sensor_msgs::LaserScan>(_opts.laser_out_topic, 10);
+
+    republish<sensor_msgs::LaserScan>(_opts.laser_in_topic, laser_pub);
 
     std::this_thread::sleep_for(_opts.pause);
   }

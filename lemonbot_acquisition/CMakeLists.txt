@@ -149,15 +149,6 @@ target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
 )
 
-add_executable(test_node
- src/acquisition_node.cpp
- src/test_node.cpp
-)
-
-
-target_link_libraries(test_node
-  ${catkin_LIBRARIES}
-)
 
 
 ## Rename C++ executable without prefix
