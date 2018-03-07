@@ -1,3 +1,0 @@
-<launch>
-    <node type="lemonbot_acquisition_node" pkg="lemonbot_acquisition" name="commander"></node>
-</launch>

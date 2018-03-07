@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   actionlib
   sensor_msgs
   pcl_ros
+  pcl_conversions   
 )
 
 ## System dependencies are found with CMake's conventions
@@ -111,7 +112,16 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES lemonbot_acquisition
-  CATKIN_DEPENDS flir_pantilt_d46 geometry_msgs laser_geometry roscpp std_msgs actionlib sensor_msgs
+  CATKIN_DEPENDS
+    flir_pantilt_d46
+    geometry_msgs
+    laser_geometry
+    roscpp
+    std_msgs
+    actionlib
+    sensor_msgs
+    pcl_ros
+    pcl_conversions
 #  DEPENDS system_lib
 )
 
@@ -149,18 +159,29 @@ target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
 )
 
-<<<<<<< HEAD
-=======
 add_executable(laser_projector
  src/laser_projector.cpp
 )
 
-
 target_link_libraries(laser_projector
   ${catkin_LIBRARIES}
 )
->>>>>>> 672461664a5e812de71697f2f1cc333609a75997
 
+add_executable(pointcloud_accumulator
+src/pointcloud_accumulator.cpp
+)
+
+target_link_libraries(pointcloud_accumulator
+ ${catkin_LIBRARIES}
+)
+
+add_executable(pointcloud_transformer
+src/pointcloud_transformer.cpp
+)
+
+target_link_libraries(pointcloud_transformer
+ ${catkin_LIBRARIES}
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

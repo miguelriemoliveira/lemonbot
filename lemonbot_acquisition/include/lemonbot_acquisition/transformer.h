@@ -22,7 +22,7 @@ protected:
   void receiveAndTransform(const typename InMsgType::ConstPtr& msg)
   {
     auto transformed = _transform(*msg);
-    _pub.publish(transformed);
+    _pub.publish(std::move(transformed));
   }
 
 private:
