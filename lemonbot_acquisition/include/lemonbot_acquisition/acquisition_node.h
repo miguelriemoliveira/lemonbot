@@ -29,6 +29,7 @@ public:
   {
     CONTINUOUS,
     POINT2POINT,
+    HYBRID,
   };
   struct Params
   {
@@ -53,10 +54,10 @@ public:
   void start(Params& params);
 
 protected:
-  void startContinuous();
-  void startPoint2Point();
+  template <Type mode>
+  void startAcquisition(Params& params);
 
-  void gotoPan(float angle, float velocity);
+  void gotoTiltPan(float pan, float pan_vel, float tilt = 0.0f, float tilt_vel = 0.0f);
 
 private:
   ros::NodeHandle _nh;

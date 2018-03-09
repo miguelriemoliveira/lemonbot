@@ -14,41 +14,23 @@ AcquisitionNode::AcquisitionNode(Options& opts)
   ROS_INFO("Connected to PtuActionServer");
 }
 
-void AcquisitionNode::start(Params& params)
-{
-  _params = params;
-
-  gotoPan(_params.min, _opts.max_vel);
-
-  if (_opts.type == Type::CONTINUOUS)
-  {
-    startContinuous();
-  }
-  else
-  {
-    startPoint2Point();
-  }
-
-  auto done = std_msgs::Bool{};
-  done.data = true;
-  _done_pub.publish(done);
-}
-
-void AcquisitionNode::startContinuous()
+template <>
+void AcquisitionNode::startAcquisition<AcquisitionNode::Type::CONTINUOUS>(Params& params)
 {
   auto passthrough = Passthrough<sensor_msgs::LaserScan>(_opts.laser_in_topic, _opts.laser_out_topic);
 
-  gotoPan(_params.max, _params.vel);
+  gotoTiltPan(params.max, params.vel);
 }
 
-void AcquisitionNode::startPoint2Point()
+template <>
+void AcquisitionNode::startAcquisition<AcquisitionNode::Type::POINT2POINT>(Params& params)
 {
-  auto delta = (_params.max - _params.min) / (_params.nsteps - 1);
-  for (int step = 0; step < _params.nsteps; step++)
+  auto delta = (params.max - params.min) / (params.nsteps - 1);
+  for (int step = 0; step < params.nsteps; step++)
   {
-    auto pan = _params.min + step * delta;
+    auto pan = params.min + step * delta;
 
-    gotoPan(pan, _params.vel);
+    gotoTiltPan(pan, params.vel);
 
     auto laser_pub = _nh.advertise<sensor_msgs::LaserScan>(_opts.laser_out_topic, 10);
 
@@ -58,13 +40,58 @@ void AcquisitionNode::startPoint2Point()
   }
 }
 
-void AcquisitionNode::gotoPan(float angle, float velocity)
+template <>
+void AcquisitionNode::startAcquisition<AcquisitionNode::Type::HYBRID>(Params& params)
+{
+  auto delta = (params.max - params.min) / (params.nsteps - 1);
+  for (int step = 0; step < params.nsteps; step++)
+  {
+    auto pan = params.min + step * delta;
+
+    auto passthrough = Passthrough<sensor_msgs::LaserScan>(_opts.laser_in_topic, _opts.laser_out_topic);
+
+    gotoTiltPan(pan, params.vel);
+
+    std::this_thread::sleep_for(_opts.pause);
+  }
+}
+
+void AcquisitionNode::start(Params& params)
+{
+  using Type = AcquisitionNode::Type;
+
+  gotoTiltPan(params.min, _opts.max_vel);
+
+  switch (_opts.type)
+  {
+    case Type::CONTINUOUS:
+      startAcquisition<Type::CONTINUOUS>(params);
+      break;
+    case Type::POINT2POINT:
+      startAcquisition<Type::POINT2POINT>(params);
+      break;
+    case Type::HYBRID:
+      startAcquisition<Type::HYBRID>(params);
+      break;
+  }
+
+  auto done = std_msgs::Bool{};
+  done.data = true;
+  _done_pub.publish(done);
+}
+
+void AcquisitionNode::gotoPan(float pan, float pan_vel)
+{
+  gotoTiltPan(pan, pan_vel);
+}
+
+void AcquisitionNode::gotoTiltPan(float pan, float pan_vel, float tilt, float tilt_vel)
 {
   auto goal = flir_pantilt_d46::PtuGotoGoal{};
-  goal.pan = angle;
-  goal.tilt = 0.0f;
-  goal.pan_vel = velocity;
-  goal.tilt_vel = 10.0f;
+  goal.pan = pan;
+  goal.tilt = tilt;
+  goal.pan_vel = pan_vel;
+  goal.tilt_vel = tilt_vel;
   _ptu_client.sendGoal(goal);
 
   while (_ptu_client.getState() != actionlib::SimpleClientGoalState::SUCCEEDED)

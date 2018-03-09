@@ -2,10 +2,12 @@
     <arg name="min" />
     <arg name="max" />
     <arg name="vel" />
+    <arg name="nsteps" />
     <node type="single_acquisition_node" pkg="lemonbot_acquisition" name="acquisiton" required="true">
         <param name="min" value="$(arg min)" />
         <param name="max" value="$(arg max)" />
         <param name="vel" value="$(arg vel)" />
+        <param name="nsteps" value="$(arg nsteps)" />
     </node>
     <node type="laser_projector" pkg="lemonbot_acquisition" name="projector">
         <remap from="input" to="registered" />

@@ -18,7 +18,8 @@ AcquisitionNode::Params get_params()
   auto got_all
      = nh.getParam("min", params.min)
     && nh.getParam("max", params.max)
-    && nh.getParam("vel", params.vel);
+    && nh.getParam("vel", params.vel)
+    && nh.getParam("nsteps", params.nsteps);
   // clang-format on
 
   if (got_all)
@@ -34,12 +35,13 @@ int main(int argc, char* argv[])
   auto params = get_params();
 
   auto opts = AcquisitionNode::Options{
-    .type = AcquisitionNode::Type::CONTINUOUS,
+    .type = AcquisitionNode::Type::HYBRID,
     .ptu_topic = "/SetPTUState",
     .max_vel = 30.0f,
     .laser_in_topic = "/laserscan",
     .laser_out_topic = "/registered",
     .done_topic = "/done",
+    .pause = 2s,
   };
 
   AcquisitionNode node(opts);
