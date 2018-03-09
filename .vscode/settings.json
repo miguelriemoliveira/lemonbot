@@ -35,6 +35,7 @@
         "atomic": "cpp",
         "slist": "cpp",
         "memory": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "optional": "cpp"
     }
 }

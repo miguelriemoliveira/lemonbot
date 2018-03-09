@@ -3,20 +3,9 @@
 using namespace lemonbot;
 using namespace std;
 
-AcquisitionNode::AcquisitionNode(Params params, Options opts)
-  : _params(params), _opts(opts), _ptu_client(opts.ptu_topic, true)
+AcquisitionNode::AcquisitionNode(Options& opts)
+  : _opts(opts), _ptu_client(opts.ptu_topic, true), _done_pub(_nh.advertise<std_msgs::Bool>(_opts.done_topic, 1))
 {
-  ostringstream info;
-
-  info << "AcquisitionNode started with params { "
-       << "min: " << _params.min << "; "
-       << "max: " << _params.max << "; "
-       << "nsteps: " << _params.nsteps << "; "
-       << "vel: " << _params.vel << "; "
-       << "}";
-
-  ROS_INFO("%s", info.str().c_str());
-
   if (!_ptu_client.waitForServer(_opts.timeout))
   {
     throw(std::runtime_error("wait for server timeout"));
@@ -25,11 +14,11 @@ AcquisitionNode::AcquisitionNode(Params params, Options opts)
   ROS_INFO("Connected to PtuActionServer");
 }
 
-void AcquisitionNode::start()
+void AcquisitionNode::start(Params& params)
 {
-  gotoPan(_params.min, _opts.max_vel);
+  _params = params;
 
-  ROS_INFO("Reached minimum position");
+  gotoPan(_params.min, _opts.max_vel);
 
   if (_opts.type == Type::CONTINUOUS)
   {
@@ -40,7 +29,9 @@ void AcquisitionNode::start()
     startPoint2Point();
   }
 
-  ROS_INFO("Finished this capture");
+  auto done = std_msgs::Bool{};
+  done.data = true;
+  _done_pub.publish(done);
 }
 
 void AcquisitionNode::startContinuous()

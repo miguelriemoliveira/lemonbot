@@ -9,6 +9,8 @@
 
 #import <ros/ros.h>
 
+#include <std_msgs/Bool.h>
+
 #include <sensor_msgs/LaserScan.h>
 
 #include <actionlib/client/simple_action_client.h>
@@ -43,11 +45,12 @@ public:
     std::string ptu_topic;
     std::string laser_out_topic;
     std::string laser_in_topic;
+    std::string done_topic;
     std::chrono::milliseconds pause = std::chrono::milliseconds{ 300 };
   };
-  AcquisitionNode(Params params, Options opts);
+  AcquisitionNode(Options& opts);
 
-  void start();
+  void start(Params& params);
 
 protected:
   void startContinuous();
@@ -62,6 +65,8 @@ private:
   Options _opts;
 
   actionlib::SimpleActionClient<flir_pantilt_d46::PtuGotoAction> _ptu_client;
+
+  ros::Publisher _done_pub;
 };
 }
 

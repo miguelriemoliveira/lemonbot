@@ -15,19 +15,24 @@ PointCloud LaserProjector::transform(const sensor_msgs::LaserScan& ls)
 
   cloud.height = 1;
 
-  auto size = ls.ranges.size();
-  cloud.width = size;
+  auto min = ls.range_min;
+  auto max = ls.range_max;
 
-  cloud.points.reserve(cloud.width);
+  cloud.points.reserve(ls.ranges.size());
 
-  for (auto step = 0; step < size; step++)
+  for (auto step = 0; step < ls.ranges.size(); step++)
   {
     float angle = ls.angle_min + step * ls.angle_increment;
     float range = ls.ranges[step];
 
-    auto point = pcl::PointXYZ{ range * std::cos(angle), range * std::sin(angle), 0 };
-    cloud.points.push_back(point);
+    if (range > min && range < max)
+    {
+      auto point = pcl::PointXYZ{ range * std::cos(angle), range * std::sin(angle), 0 };
+      cloud.points.push_back(point);
+    }
   }
+
+  cloud.width = cloud.points.size();
 
   return cloud;
 }

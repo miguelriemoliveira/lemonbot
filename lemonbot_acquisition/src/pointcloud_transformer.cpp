@@ -8,8 +8,6 @@ PointcloudTransformer::PointcloudTransformer(std::string input, std::string outp
 
 PointCloud PointcloudTransformer::transform(const PointCloud& pc)
 {
-  ROS_INFO("ok!!!");
-
   _listener.waitForTransform(pc.header.frame_id, _base_link, pc.header.stamp, ros::Duration(1.0));
 
   PointCloud out;

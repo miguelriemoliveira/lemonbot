@@ -149,13 +149,13 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node
- src/lemonbot_acquisition_node.cpp
+add_executable(single_acquisition_node
  src/acquisition_node.cpp
+ src/single_acquisition_node.cpp
 )
 
 
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(single_acquisition_node
   ${catkin_LIBRARIES}
 )
 
@@ -180,6 +180,14 @@ src/pointcloud_transformer.cpp
 )
 
 target_link_libraries(pointcloud_transformer
+ ${catkin_LIBRARIES}
+)
+
+add_executable(pointcloud_wait_for_done
+src/pointcloud_wait_for_done.cpp
+)
+
+target_link_libraries(pointcloud_wait_for_done
  ${catkin_LIBRARIES}
 )
 
