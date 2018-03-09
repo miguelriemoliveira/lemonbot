@@ -25,6 +25,9 @@ void AcquisitionNode::startAcquisition<AcquisitionNode::Type::CONTINUOUS>(Params
 template <>
 void AcquisitionNode::startAcquisition<AcquisitionNode::Type::POINT2POINT>(Params& params)
 {
+  InboundBuffer<sensor_msgs::LaserScan> buffer{ _opts.laser_in_topic };
+  auto laser_pub = _nh.advertise<sensor_msgs::LaserScan>(_opts.laser_out_topic, 10);
+
   auto delta = (params.max - params.min) / (params.nsteps - 1);
   for (int step = 0; step < params.nsteps; step++)
   {
@@ -32,9 +35,7 @@ void AcquisitionNode::startAcquisition<AcquisitionNode::Type::POINT2POINT>(Param
 
     gotoTiltPan(pan, params.vel);
 
-    auto laser_pub = _nh.advertise<sensor_msgs::LaserScan>(_opts.laser_out_topic, 10);
-
-    republish<sensor_msgs::LaserScan>(_opts.laser_in_topic, laser_pub);
+    laser_pub.publish(buffer.receive());
 
     std::this_thread::sleep_for(_opts.pause);
   }
@@ -62,7 +63,7 @@ void AcquisitionNode::start(Params& params)
 
   gotoTiltPan(params.min, _opts.max_vel);
 
-  switch (_opts.type)
+  switch (params.type)
   {
     case Type::CONTINUOUS:
       startAcquisition<Type::CONTINUOUS>(params);
@@ -78,11 +79,6 @@ void AcquisitionNode::start(Params& params)
   auto done = std_msgs::Bool{};
   done.data = true;
   _done_pub.publish(done);
-}
-
-void AcquisitionNode::gotoPan(float pan, float pan_vel)
-{
-  gotoTiltPan(pan, pan_vel);
 }
 
 void AcquisitionNode::gotoTiltPan(float pan, float pan_vel, float tilt, float tilt_vel)

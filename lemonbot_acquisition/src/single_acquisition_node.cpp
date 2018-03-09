@@ -1,3 +1,4 @@
+#include <bitset>
 #include <chrono>
 #include <thread>
 
@@ -14,13 +15,27 @@ AcquisitionNode::Params get_params()
 
   auto params = AcquisitionNode::Params{};
 
+  std::string type;
+
   // clang-format off
   auto got_all
-     = nh.getParam("min", params.min)
+     = nh.getParam("type", type)
+    && nh.getParam("min", params.min)
     && nh.getParam("max", params.max)
     && nh.getParam("vel", params.vel)
     && nh.getParam("nsteps", params.nsteps);
   // clang-format on
+
+  using Type = AcquisitionNode::Type;
+
+  if (type == "continuous")
+    params.type = Type::CONTINUOUS;
+  else if (type == "point2point")
+    params.type = Type::POINT2POINT;
+  else if (type == "hybrid")
+    params.type = Type::HYBRID;
+  else
+    throw(std::runtime_error{ "Acquisition Type not specified or not valid" });
 
   if (got_all)
     return params;
@@ -35,13 +50,12 @@ int main(int argc, char* argv[])
   auto params = get_params();
 
   auto opts = AcquisitionNode::Options{
-    .type = AcquisitionNode::Type::HYBRID,
     .ptu_topic = "/SetPTUState",
     .max_vel = 30.0f,
     .laser_in_topic = "/laserscan",
     .laser_out_topic = "/registered",
     .done_topic = "/done",
-    .pause = 2s,
+    .pause = 1000ms,
   };
 
   AcquisitionNode node(opts);

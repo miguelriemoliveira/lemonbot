@@ -23,7 +23,7 @@ public:
 
     for (; ros::ok(); ros::spinOnce())
     {
-      std::lock_guard lock(_mtx);
+      std::lock_guard<std::mutex> lock(_mtx);
       if (_available)
       {
         break;
@@ -35,14 +35,14 @@ public:
 protected:
   void receiveMessage(const typename MsgType::ConstPtr& msg)
   {
-    std::lock_guard lock(_mtx);
+    std::lock_guard<std::mutex> lock(_mtx);
     _msg = *msg;
     _available = true;
   }
 
   void reset()
   {
-    std::lock_guard lock(_mtx);
+    std::lock_guard<std::mutex> lock(_mtx);
     _available = false;
   }
 

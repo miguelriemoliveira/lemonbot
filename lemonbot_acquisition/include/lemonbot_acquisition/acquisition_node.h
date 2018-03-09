@@ -17,6 +17,7 @@
 
 #include <flir_pantilt_d46/PtuGotoAction.h>
 
+#include <lemonbot_acquisition/inbound_buffer.h>
 #include <lemonbot_acquisition/passthrough.h>
 #include <lemonbot_acquisition/republishing.h>
 
@@ -37,11 +38,11 @@ public:
     float max;     // The maximum angle of pan.
     float nsteps;  // The number of steps between the min and maximum pan angle.
     float vel;     // The maximum angular velocity of the pan.
+    Type type;
   };
   struct Options
   {
     float max_vel;
-    Type type = Type::CONTINUOUS;
     ros::Duration timeout = ros::Duration{ 5 };
     std::string ptu_topic;
     std::string laser_out_topic;

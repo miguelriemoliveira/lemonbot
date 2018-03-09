@@ -1,9 +1,11 @@
 <launch>
+    <arg name="type" />
     <arg name="min" />
     <arg name="max" />
     <arg name="vel" />
     <arg name="nsteps" />
     <node type="single_acquisition_node" pkg="lemonbot_acquisition" name="acquisiton" required="true">
+        <param name="type" value="$(arg type)" />
         <param name="min" value="$(arg min)" />
         <param name="max" value="$(arg max)" />
         <param name="vel" value="$(arg vel)" />
