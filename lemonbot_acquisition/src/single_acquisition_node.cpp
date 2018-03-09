@@ -9,10 +9,13 @@
 using namespace std::literals;
 using namespace lemonbot;
 
-AcquisitionNode::Params get_params()
-{
-  auto nh = ros::NodeHandle{ "~" };
+const auto ptu_topic = "/SetPTUState";
+const auto laser_in_topic = "/laserscan";
+const auto laser_out_topic = "/registered";
+const auto done_topic = "/done";
 
+AcquisitionNode::Params get_params(ros::NodeHandle nh)
+{
   auto params = AcquisitionNode::Params{};
 
   std::string type;
@@ -47,14 +50,16 @@ int main(int argc, char* argv[])
 {
   ros::init(argc, argv, "lemonbot_acquisition_node");
 
-  auto params = get_params();
+  auto nh = ros::NodeHandle{ "~" };
+
+  auto params = get_params(nh);
 
   auto opts = AcquisitionNode::Options{
-    .ptu_topic = "/SetPTUState",
+    .ptu_topic = ptu_topic,
     .max_vel = 30.0f,
-    .laser_in_topic = "/laserscan",
-    .laser_out_topic = "/registered",
-    .done_topic = "/done",
+    .laser_in_topic = laser_in_topic,
+    .laser_out_topic = laser_out_topic,
+    .done_topic = done_topic,
     .pause = 1000ms,
   };
 

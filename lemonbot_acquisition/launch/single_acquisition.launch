@@ -4,7 +4,7 @@
     <arg name="max" />
     <arg name="vel" />
     <arg name="nsteps" />
-    <node type="single_acquisition_node" pkg="lemonbot_acquisition" name="acquisiton" required="true">
+    <node type="single_acquisition_node" pkg="lemonbot_acquisition" name="acquisition" required="true">
         <param name="type" value="$(arg type)" />
         <param name="min" value="$(arg min)" />
         <param name="max" value="$(arg max)" />
