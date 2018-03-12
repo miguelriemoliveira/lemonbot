@@ -23,10 +23,6 @@
         <remap from="input" to="transformed" />
         <remap from="output" to="accumulator" />
     </node>
-    <node type="pointcloud_wait_for_done" pkg="lemonbot_acquisition" name="wait_for_done">
-        <remap from="input" to="accumulator" />
-        <remap from="output" to="result" />
-    </node>
     <node type="pointcloud_to_pcd" pkg="pcl_ros" name="saver">
         <remap from="input" to="result" />
         <param name="prefix" value="/home/lemonbot/data/vel_" />

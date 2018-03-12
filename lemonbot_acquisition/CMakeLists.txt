@@ -183,13 +183,6 @@ target_link_libraries(pointcloud_transformer
  ${catkin_LIBRARIES}
 )
 
-add_executable(pointcloud_wait_for_done
-src/pointcloud_wait_for_done.cpp
-)
-
-target_link_libraries(pointcloud_wait_for_done
- ${catkin_LIBRARIES}
-)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
