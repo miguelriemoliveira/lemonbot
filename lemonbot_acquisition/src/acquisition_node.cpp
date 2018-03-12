@@ -48,12 +48,11 @@ void AcquisitionNode::startAcquisition<AcquisitionNode::Type::HYBRID>(Params& pa
   for (int step = 0; step < params.nsteps; step++)
   {
     auto pan = params.min + step * delta;
+    std::this_thread::sleep_for(_opts.pause);
 
     auto passthrough = Passthrough<sensor_msgs::LaserScan>(_opts.laser_in_topic, _opts.laser_out_topic);
 
     gotoTiltPan(pan, params.vel);
-
-    std::this_thread::sleep_for(_opts.pause);
   }
 }
 

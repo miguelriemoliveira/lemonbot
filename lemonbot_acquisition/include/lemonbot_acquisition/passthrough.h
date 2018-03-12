@@ -8,8 +8,8 @@ class Passthrough
 {
 public:
   Passthrough(std::string in_topic, std::string out_topic)
-    : _pub(_nh.advertise<MsgType>(out_topic, 2))
-    , _sub(_nh.subscribe<MsgType>(in_topic, 2, &Passthrough::receiveAndPublish, this))
+    : _pub(_nh.advertise<MsgType>(out_topic, 10))
+    , _sub(_nh.subscribe<MsgType>(in_topic, 10, &Passthrough::receiveAndPublish, this))
   {
   }
 

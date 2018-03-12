@@ -2,6 +2,4 @@ uint8 type
 float32 pan_min
 float32 pan_max
 float32 pan_vel
-uint32  nsteps
----
-sensor_msgs/PointCloud2 point_cloud
+uint8 nsteps
