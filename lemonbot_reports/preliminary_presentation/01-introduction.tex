@@ -1,16 +1,55 @@
 \section{Introdução}
 
-
 \begin{frame}{Overview}
-
-    ...
-
+	Reconstrução de espaços utilizando tecnologia Lidar			
 \end{frame}
 
-\begin{frame}{State of Art}
+\subsection{Tecnologias}
 
+\begin{frame}{Visão Estéreo}
+			
+	\begin{itemize}
+		\item Mecanismo similar ao funcionamento estéreo do olho humano.
+		\item Distância é calculada pelo cálculo da disparidade entre duas imagens. Esta disparidade é depois transformada numa nuvem de pontos.
+		\item Não contem informação dimensional absoluta, apenas relativa.
+	\end{itemize}
+	
 \end{frame}
 
-\begin{frame}{Objetivos}
+\begin{frame}{RGBD}
+	
+	\begin{itemize}
+		\item Utiliza um sensor destinado à captura da informação de depth. Usualmente é usado uma câmara IR que capta padrões desenhados por um laser.
+		\item Resulta numa imagem com informação de cor (RGB) e distância (D).
+		\item Esta tecnologia não é muito precisa.
+	\end{itemize}
+	
+\end{frame}
 
+\begin{frame}{Lidar}
+	
+	...
+																
+\end{frame}
+
+\begin{frame}{Roadmap}
+	    
+	\begin{enumerate}
+		        
+		\item Aquisição da nuvem de pontos 3d
+		      
+		\item Calibração extrínseca da Câmara-PTU (hand2eye) e Câmara-Laser (radlocc).
+		      
+		\item Triangulação da nuvem de pontos.
+		              
+		\item Registo das cores à nuvem de pontos.
+		      \begin{itemize}
+		      	\item Atribuição da cor a cada vértice (simples).
+		      	\item Atribuição da textura à malha (difícil).
+		      \end{itemize}
+              
+        \item Uniformização da cor entre malhas. Variação é causada por variações nas condições da captura (tempo de exposição/color balance/luminosidade).
+
+	\end{enumerate}
+	
 \end{frame}
