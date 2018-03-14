@@ -26,7 +26,11 @@ namespace lemonbot
 class AcquisitionNode
 {
 public:
+<<<<<<< HEAD
   enum class Type
+=======
+  enum class Type : int
+>>>>>>> ebd1e904ffef777dfe9c269adb6f3cbbc746c043
   {
     CONTINUOUS,
     POINT2POINT,

@@ -54,11 +54,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  Acquisition.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -75,10 +74,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -154,9 +154,17 @@ add_executable(single_acquisition_node
  src/single_acquisition_node.cpp
 )
 
-
 target_link_libraries(single_acquisition_node
-  ${catkin_LIBRARIES}
+${catkin_LIBRARIES}
+)
+
+add_executable(multiple_acquisition_node
+src/acquisition_node.cpp
+src/multiple_acquisition_node.cpp
+)
+
+target_link_libraries(multiple_acquisition_node
+${catkin_LIBRARIES}
 )
 
 add_executable(laser_projector
@@ -183,13 +191,6 @@ target_link_libraries(pointcloud_transformer
  ${catkin_LIBRARIES}
 )
 
-add_executable(pointcloud_wait_for_done
-src/pointcloud_wait_for_done.cpp
-)
-
-target_link_libraries(pointcloud_wait_for_done
- ${catkin_LIBRARIES}
-)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
