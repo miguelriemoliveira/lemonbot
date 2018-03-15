@@ -1,17 +1,28 @@
 \documentclass{beamer}
 
-\usetheme{metropolis}
-
-\usepackage[utf8]{inputenc}
+\usetheme[progressbar=frametitle]{metropolis}
 
 \usepackage[portuguese]{babel}
 
-\usepackage{datetime}
+\usepackage{fontawesome}
 
+\usepackage{graphicx}
+\graphicspath{{img}} 
+
+\usepackage{hyperref}
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+
+\usepackage{listings}
 
 \title{Apresentação Preliminar}
 \date{\today}
-\author{Bernardo Lourenço}
+\author{
+    Bernardo Lourenço\\
+    \href{http://www.github.com/bernardomig}{\faGithub\ bernardomig}}
+
 \institute{Universidade de Aveiro}
 
 
@@ -20,5 +31,7 @@
 \maketitle
 
 \input{01-introduction}
+\input{02-work_done}
+\input{03-work_todo}
 
 \end{document}
