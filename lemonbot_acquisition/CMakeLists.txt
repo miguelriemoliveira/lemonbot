@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 project(lemonbot_acquisition)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-set(CMAKE_CXX_STANDARD 17)
-# add_compile_options(-std=c++1z)
+# set(CMAKE_CXX_STANDARD 17)
+add_compile_options(-std=c++1z)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)

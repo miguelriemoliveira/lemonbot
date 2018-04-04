@@ -12,6 +12,7 @@
 #include <std_msgs/Bool.h>
 
 #include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/Image.h>
 
 #include <actionlib/client/simple_action_client.h>
 
@@ -34,29 +35,32 @@ public:
   };
   struct Params
   {
-    float min;     // The minimum angle of pan.
-    float max;     // The maximum angle of pan.
-    float nsteps;  // The number of steps between the min and maximum pan angle.
-    float vel;     // The maximum angular velocity of the pan.
+    float min;    // The minimum angle of pan.
+    float max;    // The maximum angle of pan.
+    float nsteps; // The number of steps between the min and maximum pan angle.
+    float vel;    // The maximum angular velocity of the pan.
     Type type;
   };
   struct Options
   {
     float max_vel;
-    ros::Duration timeout = ros::Duration{ 5 };
+    ros::Duration timeout = ros::Duration{5};
     std::string ptu_topic;
     std::string laser_out_topic;
     std::string laser_in_topic;
+    std::string camera_in_topic;
+    std::string camera_out_topic;
     std::string done_topic;
-    std::chrono::milliseconds pause = std::chrono::milliseconds{ 300 };
+    std::chrono::milliseconds pause = std::chrono::milliseconds{300};
   };
-  AcquisitionNode(Options& opts);
 
-  void start(Params& params);
+  AcquisitionNode(Options &opts);
+
+  void start(Params &params);
 
 protected:
   template <Type mode>
-  void startAcquisition(Params& params);
+  void startAcquisition(Params &params);
 
   void gotoTiltPan(float pan, float pan_vel, float tilt = 0.0f, float tilt_vel = 0.0f);
 

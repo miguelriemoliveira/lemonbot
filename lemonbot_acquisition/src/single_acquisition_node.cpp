@@ -38,29 +38,31 @@ AcquisitionNode::Params get_params(ros::NodeHandle nh)
   else if (type == "hybrid")
     params.type = Type::HYBRID;
   else
-    throw(std::runtime_error{ "Acquisition Type not specified or not valid" });
+    throw(std::runtime_error{"Acquisition Type not specified or not valid"});
 
   if (got_all)
     return params;
   else
-    throw(std::runtime_error{ "no enough params specified" });
+    throw(std::runtime_error{"no enough params specified"});
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
   ros::init(argc, argv, "lemonbot_acquisition_node");
 
-  auto nh = ros::NodeHandle{ "~" };
+  auto nh = ros::NodeHandle{"~"};
 
   auto params = get_params(nh);
 
   auto opts = AcquisitionNode::Options{
-    .ptu_topic = ptu_topic,
-    .max_vel = 30.0f,
-    .laser_in_topic = laser_in_topic,
-    .laser_out_topic = laser_out_topic,
-    .done_topic = done_topic,
-    .pause = 1000ms,
+      .ptu_topic = ptu_topic,
+      .max_vel = 30.0f,
+      .laser_in_topic = laser_in_topic,
+      .laser_out_topic = laser_out_topic,
+      .camera_in_topic = "camera/image_raw",
+      .camera_out_topic = "acquisition/images",
+      .done_topic = done_topic,
+      .pause = 1000ms,
   };
 
   AcquisitionNode node(opts);
