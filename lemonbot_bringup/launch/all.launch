@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="calibrated" default="true"/>
-  <arg name="enable_camera" default="false" />
-  <arg name="ptu_port" default="/dev/ttyUSB1"/>
-  <arg name="laser_port" default="/dev/ttyUSB0"/>
+  <arg name="ptu_port" default="/dev/ttyUSB0"/>
+  <arg name="laser_port" default="/dev/ttyUSB1"/>
   <include file="$(find lemonbot_bringup)/launch/pan_tilt.launch">
     <arg name="port" value="$(arg ptu_port)" />
   </include>
-  <group if="$(arg enable_camera)">
+  <group>
     <include file="$(find lemonbot_bringup)/launch/camera.launch"></include>
   </group>
   <include file="$(find lemonbot_bringup)/launch/laser.launch">

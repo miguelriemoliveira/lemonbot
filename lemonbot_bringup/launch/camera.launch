@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="name" default="lemonbot_camera" />
-    <include file="$(find openni2_launch)/launch/openni2.launch">
-        <arg name="camera" value="name" />
-        <arg name="depth_registration" value="true" />
-    </include>
+    <arg name="port" default="/dev/video0" />
+    <arg name="pixel_format" default="yuyv" />
+    <arg name="frame" default="lemonbot_camera_mount_link" />
+    <node pkg="usb_cam" type="usb_cam_node" name="camera">
+        <param name="video_device" value="$(arg port)" />
+        <param name="pixel_format" value="$(arg pixel_format)" />
+        <param name="camera_frame_id" value="$(arg frame)" />
+    </node>
 </launch>
