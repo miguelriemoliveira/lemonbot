@@ -7,7 +7,7 @@
 #include <string>
 #include <thread>
 
-#import <ros/ros.h>
+#include <ros/ros.h>
 
 #include <std_msgs/Bool.h>
 
@@ -33,25 +33,34 @@ public:
     POINT2POINT,
     HYBRID,
   };
+
+  struct PanTiltInterpolation
+  {
+    float min;
+    float max;
+    int nsteps;
+    float vel;
+  };
+
   struct Params
   {
-    float min;    // The minimum angle of pan.
-    float max;    // The maximum angle of pan.
-    float nsteps; // The number of steps between the min and maximum pan angle.
-    float vel;    // The maximum angular velocity of the pan.
+    PanTiltInterpolation pan;
+    PanTiltInterpolation tilt;
     Type type;
   };
+
   struct Options
   {
-    float max_vel;
-    ros::Duration timeout = ros::Duration{5};
+    PanTiltInterpolation pan_limits;
+    PanTiltInterpolation tilt_limits;
+    ros::Duration timeout;
     std::string ptu_topic;
     std::string laser_out_topic;
     std::string laser_in_topic;
     std::string camera_in_topic;
     std::string camera_out_topic;
     std::string done_topic;
-    std::chrono::milliseconds pause = std::chrono::milliseconds{300};
+    std::chrono::milliseconds pause;
   };
 
   AcquisitionNode(Options &opts);

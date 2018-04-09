@@ -23,10 +23,10 @@ AcquisitionNode::Params get_params(ros::NodeHandle nh)
   // clang-format off
   auto got_all
      = nh.getParam("type", type)
-    && nh.getParam("min", params.min)
-    && nh.getParam("max", params.max)
-    && nh.getParam("vel", params.vel)
-    && nh.getParam("nsteps", params.nsteps);
+    && nh.getParam("min", params.pan.min)
+    && nh.getParam("max", params.pan.max)
+    && nh.getParam("vel", params.pan.vel)
+    && nh.getParam("nsteps", params.pan.nsteps);
   // clang-format on
 
   using Type = AcquisitionNode::Type;
@@ -54,16 +54,17 @@ int main(int argc, char *argv[])
 
   auto params = get_params(nh);
 
-  auto opts = AcquisitionNode::Options{
-      .ptu_topic = ptu_topic,
-      .max_vel = 30.0f,
-      .laser_in_topic = laser_in_topic,
-      .laser_out_topic = laser_out_topic,
-      .camera_in_topic = "camera/image_raw",
-      .camera_out_topic = "acquisition/images",
-      .done_topic = done_topic,
-      .pause = 1000ms,
-  };
+  auto opts = AcquisitionNode::Options{};
+  opts.pan_limits = AcquisitionNode::PanTiltInterpolation{};
+  opts.tilt_limits = AcquisitionNode::PanTiltInterpolation{};
+  opts.timeout = ros::Duration{5};
+  opts.ptu_topic = ptu_topic;
+  opts.laser_out_topic = laser_out_topic;
+  opts.laser_in_topic = laser_in_topic;
+  opts.camera_out_topic = "acquisition/images";
+  opts.camera_in_topic = "camera/image_raw";
+  opts.done_topic = done_topic;
+  opts.pause = 1000ms;
 
   AcquisitionNode node(opts);
 
