@@ -54,10 +54,9 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  Acquisition.msg
-)
+# add_message_files(
+#   FILES
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -155,15 +154,6 @@ add_executable(single_acquisition_node
 )
 
 target_link_libraries(single_acquisition_node
-${catkin_LIBRARIES}
-)
-
-add_executable(multiple_acquisition_node
-src/acquisition_node.cpp
-src/multiple_acquisition_node.cpp
-)
-
-target_link_libraries(multiple_acquisition_node
 ${catkin_LIBRARIES}
 )
 

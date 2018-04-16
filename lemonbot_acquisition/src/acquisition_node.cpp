@@ -17,9 +17,28 @@ AcquisitionNode::AcquisitionNode(Options &opts)
 template <>
 void AcquisitionNode::startAcquisition<AcquisitionNode::Type::CONTINUOUS>(Params &params)
 {
-  auto laser_passthrough = Passthrough<sensor_msgs::LaserScan>(_opts.laser_in_topic, _opts.laser_out_topic);
+  InboundBuffer<sensor_msgs::Image> camera_buffer{_opts.camera_in_topic};
+  auto camera_pub = _nh.advertise<sensor_msgs::Image>(_opts.camera_out_topic, 10);
 
-  gotoTiltPan(params.max, params.vel);
+  auto passthrough = Passthrough<sensor_msgs::LaserScan>(_opts.laser_in_topic, _opts.laser_out_topic);
+
+  auto pan_delta = (params.pan.max - params.pan.min) / (params.pan.nsteps - 1);
+  auto tilt_delta = (params.tilt.max - params.tilt.min) / (params.tilt.nsteps - 1);
+
+  for (int pan_step = 0; pan_step < params.pan.nsteps; pan_step++)
+    for (int tilt_step = 0; tilt_step < params.tilt.nsteps; tilt_step++)
+    {
+      auto pan =
+          (tilt_step % 2 == 0)
+              ? params.pan.min + pan_step * pan_delta
+              : params.pan.max - pan_step * pan_delta;
+      auto tilt = params.tilt.min + step * tilt_delta;
+
+      std::this_thread::sleep_for(_opts.pause);
+      camera_pub.publish(camera_buffer.receive());
+
+      gotoTiltPan(pan, params.pan.vel, tilt, params.pan.vel);
+    }
 }
 
 template <>
@@ -30,12 +49,12 @@ void AcquisitionNode::startAcquisition<AcquisitionNode::Type::POINT2POINT>(Param
   InboundBuffer<sensor_msgs::Image> camera_buffer{_opts.camera_in_topic};
   auto camera_pub = _nh.advertise<sensor_msgs::Image>(_opts.camera_out_topic, 10);
 
-  auto delta = (params.max - params.min) / (params.nsteps - 1);
-  for (int step = 0; step < params.nsteps; step++)
+  auto delta = (params.pan.max - params.pan.min) / (params.pan.nsteps - 1);
+  for (int step = 0; step < params.pan.nsteps; step++)
   {
-    auto pan = params.min + step * delta;
+    auto pan = params.pan.min + step * delta;
 
-    gotoTiltPan(pan, params.vel);
+    gotoTiltPan(pan, params.pan.vel);
 
     laser_pub.publish(laser_buffer.receive());
     camera_pub.publish(camera_buffer.receive());
@@ -44,32 +63,11 @@ void AcquisitionNode::startAcquisition<AcquisitionNode::Type::POINT2POINT>(Param
   }
 }
 
-template <>
-void AcquisitionNode::startAcquisition<AcquisitionNode::Type::HYBRID>(Params &params)
-{
-  InboundBuffer<sensor_msgs::Image> camera_buffer{_opts.camera_in_topic};
-  auto camera_pub = _nh.advertise<sensor_msgs::Image>(_opts.camera_out_topic, 10);
-
-  auto delta = (params.max - params.min) / (params.nsteps - 1);
-  for (int step = 0; step < params.nsteps; step++)
-  {
-    auto pan = params.min + step * delta;
-
-    std::this_thread::sleep_for(_opts.pause);
-
-    auto passthrough = Passthrough<sensor_msgs::LaserScan>(_opts.laser_in_topic, _opts.laser_out_topic);
-
-    camera_pub.publish(camera_buffer.receive());
-
-    gotoTiltPan(pan, params.vel);
-  }
-}
-
 void AcquisitionNode::start(Params &params)
 {
   using Type = AcquisitionNode::Type;
 
-  gotoTiltPan(params.min, _opts.max_vel);
+  gotoTiltPan(params.pan.min, _opts.pan_limits.vel);
 
   switch (params.type)
   {
@@ -78,9 +76,6 @@ void AcquisitionNode::start(Params &params)
     break;
   case Type::POINT2POINT:
     startAcquisition<Type::POINT2POINT>(params);
-    break;
-  case Type::HYBRID:
-    startAcquisition<Type::HYBRID>(params);
     break;
   }
 
