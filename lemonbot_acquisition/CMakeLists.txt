@@ -191,6 +191,14 @@ target_link_libraries(pointcloud_transformer
  ${catkin_LIBRARIES}
 )
 
+add_executable(pointcloud_colorizer
+src/pointcloud_colorizer.cpp
+)
+
+target_link_libraries(pointcloud_colorizer
+ ${catkin_LIBRARIES}
+)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
