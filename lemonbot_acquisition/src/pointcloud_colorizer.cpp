@@ -39,6 +39,15 @@ protected:
   {
     PointCloudWithColor new_pc;
 
+    for (auto point : pc.points)
+    {
+      pcl::PointXYZRGB p;
+      p.x = point.x;
+      p.y = point.y;
+      p.z = point.z;
+      new_pc.points.push_back(p);
+    }
+
     return new_pc;
   }
 
