@@ -1,11 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="port" default="/dev/video0" />
-    <arg name="pixel_format" default="yuyv" />
-    <arg name="frame" default="lemonbot_camera_mount_link" />
-    <node pkg="usb_cam" type="usb_cam_node" name="camera">
-        <param name="video_device" value="$(arg port)" />
-        <param name="pixel_format" value="$(arg pixel_format)" />
-        <param name="camera_frame_id" value="$(arg frame)" />
-    </node>
+    <arg name="port" default="14352340" />
+    <include file="$(find flea3)/launch/single_node.launch">
+        <arg name="device" value="$(arg port)" />
+    </include>
 </launch>
