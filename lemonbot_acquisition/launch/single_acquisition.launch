@@ -1,15 +1,23 @@
 <launch>
     <arg name="type" />
-    <arg name="min" />
-    <arg name="max" />
-    <arg name="vel" />
-    <arg name="nsteps" />
+    <arg name="pan_min" />
+    <arg name="pan_max" />
+    <arg name="pan_vel" />
+    <arg name="pan_nsteps" />
+    <arg name="tilt_min" />
+    <arg name="tilt_max" />
+    <arg name="tilt_vel" />
+    <arg name="tilt_nsteps" />
     <node type="single_acquisition_node" pkg="lemonbot_acquisition" name="acquisition" required="true">
         <param name="type" value="$(arg type)" />
-        <param name="min" value="$(arg min)" />
-        <param name="max" value="$(arg max)" />
-        <param name="vel" value="$(arg vel)" />
-        <param name="nsteps" value="$(arg nsteps)" />
+        <param name="pan_min" value="$(arg pan_min)" />
+        <param name="pan_max" value="$(arg pan_max)" />
+        <param name="pan_vel" value="$(arg pan_vel)" />
+        <param name="pan_nsteps" value="$(arg pan_nsteps)" />
+        <param name="tilt_min" value="$(arg tilt_min)" />
+        <param name="tilt_max" value="$(arg tilt_max)" />
+        <param name="tilt_vel" value="$(arg tilt_vel)" />
+        <param name="tilt_nsteps" value="$(arg tilt_nsteps)" />
     </node>
     <node type="laser_projector" pkg="lemonbot_acquisition" name="projector">
         <remap from="input" to="registered" />

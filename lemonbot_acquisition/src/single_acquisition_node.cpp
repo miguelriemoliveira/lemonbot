@@ -23,10 +23,14 @@ AcquisitionNode::Params get_params(ros::NodeHandle nh)
   // clang-format off
   auto got_all
      = nh.getParam("type", type)
-    && nh.getParam("min", params.pan.min)
-    && nh.getParam("max", params.pan.max)
-    && nh.getParam("vel", params.pan.vel)
-    && nh.getParam("nsteps", params.pan.nsteps);
+    && nh.getParam("pan_min", params.pan.min)
+    && nh.getParam("pan_max", params.pan.max)
+    && nh.getParam("pan_vel", params.pan.vel)
+    && nh.getParam("pan_nsteps", params.pan.nsteps)
+    && nh.getParam("tilt_min", params.tilt.min)
+    && nh.getParam("tilt_max", params.tilt.max)
+    && nh.getParam("tilt_vel", params.tilt.vel)
+    && nh.getParam("tilt_nsteps", params.tilt.nsteps);
   // clang-format on
 
   using Type = AcquisitionNode::Type;
@@ -35,29 +39,27 @@ AcquisitionNode::Params get_params(ros::NodeHandle nh)
     params.type = Type::CONTINUOUS;
   else if (type == "point2point")
     params.type = Type::POINT2POINT;
-  else if (type == "hybrid")
-    params.type = Type::HYBRID;
   else
-    throw(std::runtime_error{"Acquisition Type not specified or not valid"});
+    throw(std::runtime_error{ "Acquisition Type not specified or not valid" });
 
   if (got_all)
     return params;
   else
-    throw(std::runtime_error{"no enough params specified"});
+    throw(std::runtime_error{ "no enough params specified" });
 }
 
 int main(int argc, char *argv[])
 {
   ros::init(argc, argv, "lemonbot_acquisition_node");
 
-  auto nh = ros::NodeHandle{"~"};
+  auto nh = ros::NodeHandle{ "~" };
 
   auto params = get_params(nh);
 
   auto opts = AcquisitionNode::Options{};
   opts.pan_limits = AcquisitionNode::PanTiltInterpolation{};
   opts.tilt_limits = AcquisitionNode::PanTiltInterpolation{};
-  opts.timeout = ros::Duration{5};
+  opts.timeout = ros::Duration{ 5 };
   opts.ptu_topic = ptu_topic;
   opts.laser_out_topic = laser_out_topic;
   opts.laser_in_topic = laser_in_topic;

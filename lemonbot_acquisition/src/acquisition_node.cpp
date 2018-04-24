@@ -25,8 +25,8 @@ void AcquisitionNode::startAcquisition<AcquisitionNode::Type::CONTINUOUS>(Params
   auto pan_delta = (params.pan.max - params.pan.min) / (params.pan.nsteps - 1);
   auto tilt_delta = (params.tilt.max - params.tilt.min) / (params.tilt.nsteps - 1);
 
-  for (int pan_step = 0; pan_step < params.pan.nsteps; pan_step++)
-    for (int tilt_step = 0; tilt_step < params.tilt.nsteps; tilt_step++)
+  for (int tilt_step = 0; tilt_step < params.tilt.nsteps; tilt_step++)
+    for (int pan_step = 0; pan_step < params.pan.nsteps; pan_step++)
     {
       auto pan = (tilt_step % 2 == 0) ? params.pan.min + pan_step * pan_delta : params.pan.max - pan_step * pan_delta;
       auto tilt = params.tilt.min + tilt_step * tilt_delta;
@@ -34,30 +34,14 @@ void AcquisitionNode::startAcquisition<AcquisitionNode::Type::CONTINUOUS>(Params
       std::this_thread::sleep_for(_opts.pause);
       camera_pub.publish(camera_buffer.receive());
 
-      gotoTiltPan(pan, params.pan.vel, tilt, params.pan.vel);
+      gotoTiltPan(pan, params.pan.vel, tilt, params.tilt.vel);
     }
 }
 
 template <>
 void AcquisitionNode::startAcquisition<AcquisitionNode::Type::POINT2POINT>(Params &params)
 {
-  InboundBuffer<sensor_msgs::LaserScan> laser_buffer{ _opts.laser_in_topic };
-  auto laser_pub = _nh.advertise<sensor_msgs::LaserScan>(_opts.laser_out_topic, 10);
-  InboundBuffer<sensor_msgs::Image> camera_buffer{ _opts.camera_in_topic };
-  auto camera_pub = _nh.advertise<sensor_msgs::Image>(_opts.camera_out_topic, 10);
-
-  auto delta = (params.pan.max - params.pan.min) / (params.pan.nsteps - 1);
-  for (int step = 0; step < params.pan.nsteps; step++)
-  {
-    auto pan = params.pan.min + step * delta;
-
-    gotoTiltPan(pan, params.pan.vel);
-
-    laser_pub.publish(laser_buffer.receive());
-    camera_pub.publish(camera_buffer.receive());
-
-    std::this_thread::sleep_for(_opts.pause);
-  }
+  throw(std::logic_error("not implemented"));
 }
 
 void AcquisitionNode::start(Params &params)

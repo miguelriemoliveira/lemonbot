@@ -2,6 +2,7 @@
 <launch>
     <arg name="port" default="14352340" />
     <include file="$(find flea3)/launch/single_node.launch">
+        <arg name="camera" value="camera" />
         <arg name="device" value="$(arg port)" />
     </include>
 </launch>
