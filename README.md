@@ -45,3 +45,18 @@ rpy: [0, 0, 0]
 ```
 
 These files are automatically loaded to the `robot_description` using the xacro preprocessor.
+
+# Remote connection through SSH
+
+It it possible to connect to the lemonbot through a ssh connection, using the wifi provided by the router in the mobile station.
+The first connection can be made by ssh'ing into the portable computer using the command
+
+```
+ssh <ip of the computer> -l lemonbot
+```
+
+The username and password are both `lemonbot`.
+
+## Passwordless login
+
+To facilitate the login, we can use a public-private key. To do so, create a key pair in the client machine with the command `ssh-keygen -t rsa` and the copy the public key to the lemonbot computer using the command `ssh-copy-id lemonbot@<ip of the computer>`. Now use the first command to login without a password.
