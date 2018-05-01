@@ -60,3 +60,32 @@ The username and password are both `lemonbot`.
 ## Passwordless login
 
 To facilitate the login, we can use a public-private key. To do so, create a key pair in the client machine with the command `ssh-keygen -t rsa` and the copy the public key to the lemonbot computer using the command `ssh-copy-id lemonbot@<ip of the computer>`. Now use the first command to login without a password.
+
+# wstool for dependency management
+
+## Download `lemonbot.rosinstall`
+
+A `.rosinstall` file contains the package dependencies and the versions for all the packages required to use with the lemonbot package, including their repositories (git).
+
+To download the `lemonbot.rosinstall`, use the following command: 
+
+```
+wget <lemonbot.rosinstall>
+```
+
+## Initialize a `src` folder for the packages.
+
+Then in the same folder as the `.rosinstall` file, clone all the dependencies into the folder `src`:
+
+```
+wstool init src lemonbot.rosinstall
+```
+
+To update all the repositories, just use the `update` command of wstool:
+
+```
+wstool update -t src
+```
+
+Note: to execute the command faster, use multiple jobs to parallelize the clone/pull, with the argument `-j8`.
+
