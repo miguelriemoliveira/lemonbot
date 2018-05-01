@@ -11,9 +11,13 @@
 
 #include <sensor_msgs/PointCloud2.h>
 
-#include <lemonbot_acquisition/transformer.h>
+#include <lemonbot_utils/transformer.h>
 
 #include <tf/transform_listener.h>
+
+namespace lemonbot::pointcloud_pipeline {
+
+using namespace lemonbot::utils;
 
 typedef sensor_msgs::PointCloud2 PointCloud;
 
@@ -29,5 +33,7 @@ private:
   std::string _base_link;
   tf::TransformListener _listener;
 };
+
+}
 
 #endif

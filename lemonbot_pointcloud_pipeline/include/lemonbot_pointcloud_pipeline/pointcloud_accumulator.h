@@ -10,7 +10,11 @@
 
 #include <pcl_ros/point_cloud.h>
 
-#include <lemonbot_acquisition/transformer.h>
+#include <lemonbot_utils/transformer.h>
+
+namespace lemonbot::pointcloud_pipeline {
+
+using namespace lemonbot::utils;
 
 typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
 
@@ -32,5 +36,7 @@ private:
 
   PointCloud _accumulated;
 };
+
+}
 
 #endif

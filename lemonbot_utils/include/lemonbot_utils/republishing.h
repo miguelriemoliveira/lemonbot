@@ -1,5 +1,5 @@
-#ifndef LEMONBOT_ACQUISITION_REPUBLISHING_H
-#define LEMONBOT_ACQUISITION_REPUBLISHING_H
+#ifndef REPUBLISHING_H
+#define REPUBLISHING_H
 
 #include <functional>
 #include <mutex>
@@ -8,8 +8,8 @@
 
 #include <ros/ros.h>
 
-namespace lemonbot
-{
+namespace lemonbot::utils {
+
 template <typename MsgType>
 void republish(std::string topic_name, ros::Publisher& pub)
 {
@@ -25,6 +25,7 @@ void republishWithTransformation(std::string topic_name, ros::Publisher pub,
   auto transformed = transform(*msg);
   pub.publish(transformed);
 }
+
 }
 
 #endif

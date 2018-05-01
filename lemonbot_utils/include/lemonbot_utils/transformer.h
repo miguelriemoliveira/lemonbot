@@ -5,6 +5,8 @@
 
 #include <ros/ros.h>
 
+namespace lemonbot::utils {
+
 template <typename InMsgType, typename OutMsgType>
 class Transformer
 {
@@ -31,5 +33,7 @@ private:
   ros::Subscriber _sub;
   transformer _transform;
 };
+
+}
 
 #endif

@@ -1,23 +1,20 @@
-cmake_minimum_required(VERSION 3.5)
-project(lemonbot_acquisition)
+cmake_minimum_required(VERSION 2.8.3)
+project(lemonbot_pointcloud_pipeline)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-set(CMAKE_CXX_STANDARD 17)
-# add_compile_options(-std=c++1)
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  flir_pantilt_d46
   geometry_msgs
-  laser_geometry
-  roscpp
-  std_msgs
-  actionlib
-  sensor_msgs
   pcl_ros
-  pcl_conversions   
+  roscpp
+  sensor_msgs
+  std_msgs
+
+  lemonbot_utils
 )
 
 ## System dependencies are found with CMake's conventions
@@ -56,6 +53,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 # add_message_files(
 #   FILES
+#   Message1.msg
+#   Message2.msg
 # )
 
 ## Generate services in the 'srv' folder
@@ -75,8 +74,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   geometry_msgs
-#   std_msgs
+#   geometry_msgs#   sensor_msgs#   std_msgs
 # )
 
 ################################################
@@ -109,18 +107,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
- INCLUDE_DIRS include
-#  LIBRARIES lemonbot_acquisition
-  CATKIN_DEPENDS
-    flir_pantilt_d46
-    geometry_msgs
-    laser_geometry
-    roscpp
-    std_msgs
-    actionlib
-    sensor_msgs
-    pcl_ros
-    pcl_conversions
+  INCLUDE_DIRS include
+#  LIBRARIES lemonbot_pointcloud_pipeline
+  CATKIN_DEPENDS geometry_msgs pcl_ros roscpp sensor_msgs std_msgs lemonbot_utils
 #  DEPENDS system_lib
 )
 
@@ -137,7 +126,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/lemonbot_acquisition.cpp
+#   src/${PROJECT_NAME}/lemonbot_pointcloud_pipeline.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -148,15 +137,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(single_acquisition_node
- src/acquisition_node.cpp
- src/single_acquisition_node.cpp
-)
-
-target_link_libraries(single_acquisition_node
-${catkin_LIBRARIES}
-)
-
+# add_executable(${PROJECT_NAME}_node src/lemonbot_pointcloud_pipeline_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -172,6 +153,31 @@ ${catkin_LIBRARIES}
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+
+
+add_executable(pointcloud_accumulator
+src/pointcloud_accumulator.cpp
+)
+
+target_link_libraries(pointcloud_accumulator
+ ${catkin_LIBRARIES}
+)
+
+add_executable(pointcloud_transformer
+src/pointcloud_transformer.cpp
+)
+
+target_link_libraries(pointcloud_transformer
+ ${catkin_LIBRARIES}
+)
+
+add_executable(pointcloud_colorizer
+src/pointcloud_colorizer.cpp
+)
+
+target_link_libraries(pointcloud_colorizer
+ ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
@@ -213,7 +219,7 @@ ${catkin_LIBRARIES}
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_lemonbot_acquisition.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_lemonbot_pointcloud_pipeline.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

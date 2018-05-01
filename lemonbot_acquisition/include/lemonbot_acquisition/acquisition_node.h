@@ -22,7 +22,7 @@
 #include <lemonbot_acquisition/passthrough.h>
 #include <lemonbot_acquisition/republishing.h>
 
-namespace lemonbot
+namespace lemonbot::acquisition
 {
 class AcquisitionNode
 {

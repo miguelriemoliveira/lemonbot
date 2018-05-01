@@ -1,4 +1,6 @@
-#include <lemonbot_acquisition/laser_projector.h>
+#include <lemonbot_laser_pipeline/laser_projector.h>
+
+using namespace lemonbot::laser_pipeline;
 
 LaserProjector::LaserProjector(std::string ls_topic, std::string pc_topic)
   : Transformer(ls_topic, pc_topic, std::bind(&LaserProjector::transform, this, std::placeholders::_1))

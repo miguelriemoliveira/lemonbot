@@ -8,6 +8,8 @@
 
 #include <ros/ros.h>
 
+namespace lemonbot::utils {
+
 template <typename MsgType>
 class InboundBuffer
 {
@@ -53,5 +55,7 @@ private:
   bool _available;
   std::mutex _mtx;
 };
+
+}
 
 #endif

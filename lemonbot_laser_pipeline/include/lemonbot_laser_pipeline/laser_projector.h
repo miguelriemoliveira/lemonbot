@@ -14,7 +14,11 @@
 
 #include <tf/transform_listener.h>
 
-#include <lemonbot_acquisition/transformer.h>
+#include <lemonbot_utils/transformer.h>
+
+namespace lemonbot::laser_pipeline {
+
+using namespace lemonbot::utils;
 
 typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
 
@@ -28,5 +32,7 @@ protected:
 
 private:
 };
+
+}
 
 #endif

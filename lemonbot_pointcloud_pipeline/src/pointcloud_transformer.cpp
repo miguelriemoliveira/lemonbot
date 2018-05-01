@@ -1,4 +1,6 @@
-#include <lemonbot_acquisition/pointcloud_transformer.h>
+#include <lemonbot_pointcloud_pipeline/pointcloud_transformer.h>
+
+using namespace lemonbot::pointcloud_pipeline;
 
 PointcloudTransformer::PointcloudTransformer(std::string input, std::string output, std::string base_link)
   : _base_link(base_link)

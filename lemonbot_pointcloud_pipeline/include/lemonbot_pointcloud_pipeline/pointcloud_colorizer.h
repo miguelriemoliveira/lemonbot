@@ -9,8 +9,8 @@
 
 #include <pcl_ros/point_cloud.h>
 
-namespace lemonbot::acquisition
-{
+namespace lemonbot::pointcloud_pipeline {
+
 class PointCloudColorizer
 {
 public:

@@ -1,4 +1,6 @@
-#include <lemonbot_acquisition/pointcloud_accumulator.h>
+#include <lemonbot_pointcloud_pipeline/pointcloud_accumulator.h>
+
+using namespace lemonbot::pointcloud_pipeline;
 
 PointcloudAccumulator::PointcloudAccumulator(std::string input, std::string output, std::string done_topic,
                                              std::string result_topic)

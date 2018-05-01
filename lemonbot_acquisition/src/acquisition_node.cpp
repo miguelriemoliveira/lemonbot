@@ -1,6 +1,7 @@
 #include <lemonbot_acquisition/acquisition_node.h>
 
 using namespace lemonbot;
+using namespace lemonbot::acquisition;
 using namespace std;
 
 AcquisitionNode::AcquisitionNode(Options &opts)

@@ -8,6 +8,7 @@
 
 using namespace std::literals;
 using namespace lemonbot;
+using namespace lemonbot::acquisition;
 
 const auto ptu_topic = "/SetPTUState";
 const auto laser_in_topic = "/laserscan";
