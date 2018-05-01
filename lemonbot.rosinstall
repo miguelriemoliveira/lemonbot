@@ -1,0 +1,20 @@
+- git:
+    local-name: camera_base
+    uri: https://github.com/KumarRobotics/camera_base
+    version: master
+- git:
+    local-name: fiducials
+    uri: https://github.com/UbiquityRobotics/fiducials.git
+    version: kinetic-devel
+- git:
+    local-name: flea3
+    uri: https://github.com/KumarRobotics/flea3
+    version: master
+- git:
+    local-name: flir_pantilt_d46
+    uri: https://github.com/miguelriemoliveira/flir_pantilt_d46.git
+    version: master
+- git:
+    local-name: lemonbot
+    uri: https://github.com/miguelriemoliveira/lemonbot.git
+    version: master
