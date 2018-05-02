@@ -89,3 +89,24 @@ wstool update -t src
 
 Note: to execute the command faster, use multiple jobs to parallelize the clone/pull, with the argument `-j8`.
 
+# Calibrations
+
+## Intrinsic calibration of the RGB Camera
+
+
+
+## Extrinsic calibration of the RGB Camera to the PTU (hand2eye calibration)
+
+To start the lemonbot in calibration "mode", roslaunch the `lemonbot_calibration/manual_control` and the
+`lemonbot_calibration/extrinsic_calibration` and  like so:
+
+```
+roslaunch lemonbot_calibration manual_control.launch
+roslaunch lemonbot_calibration extrinsic_calibration.launch fiducial_len:=0.093 fiducial_id:=10
+```
+
+Then start the calibration client to capture all the required poses and follow it's instructions
+
+```
+rosrun lemonbot_calibration calibrate_rgb_camera.py
+```
