@@ -18,9 +18,9 @@
 
 #include <flir_pantilt_d46/PtuGotoAction.h>
 
-#include <lemonbot_acquisition/inbound_buffer.h>
-#include <lemonbot_acquisition/passthrough.h>
-#include <lemonbot_acquisition/republishing.h>
+#include <lemonbot_utils/inbound_buffer.h>
+#include <lemonbot_utils/passthrough.h>
+#include <lemonbot_utils/republishing.h>
 
 namespace lemonbot::acquisition
 {

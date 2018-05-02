@@ -1,6 +1,8 @@
 #ifndef POINTCLOUD_COLORIZER_HPP
 #define POINTCLOUD_COLORIZER_HPP
 
+#include <algorithm>
+
 #include <ros/ros.h>
 
 #include <sensor_msgs/CameraInfo.h>
@@ -9,7 +11,10 @@
 
 #include <pcl_ros/point_cloud.h>
 
-namespace lemonbot::pointcloud_pipeline {
+namespace lemonbot::pointcloud_pipeline
+{
+
+typedef pcl::PointCloud<pcl::PointXYZRGB> PointCloudWithColor;
 
 class PointCloudColorizer
 {
@@ -20,14 +25,15 @@ protected:
   using PointCloudWithColor = pcl::PointCloud<pcl::PointXYZRGB>;
   using PointCloudWithoutColor = pcl::PointCloud<pcl::PointXYZ>;
 
-  void receiveImage(const sensor_msgs::Image::ConstPtr& img);
+  void receiveImage(const sensor_msgs::Image::ConstPtr &img);
 
-  void receivePointCloud(const PointCloudWithoutColor::ConstPtr& pc);
+  void receivePointCloud(const PointCloudWithoutColor::ConstPtr &pc);
 
-  static PointCloudWithColor colorize(const PointCloudWithoutColor& pc, const sensor_msgs::Image& img);
+  static PointCloudWithColor colorize(const PointCloudWithoutColor &pc, const sensor_msgs::Image &img);
 
-  static pcl::PointXYZHSV colorizeSinglePoint(const pcl::PointXYZ& point, const sensor_msgs::Image& img,
-                                              const sensor_msgs::CameraInfo);
+  static pcl::PointXYZRGB colorize(const pcl::PointXYZ &point,
+                                   const sensor_msgs::Image &img,
+                                   const sensor_msgs::CameraInfo &camera_info);
 
 private:
   ros::NodeHandle _nh;

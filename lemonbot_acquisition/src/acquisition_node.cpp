@@ -2,6 +2,7 @@
 
 using namespace lemonbot;
 using namespace lemonbot::acquisition;
+using namespace lemonbot::utils;
 using namespace std;
 
 AcquisitionNode::AcquisitionNode(Options &opts)

@@ -10,6 +10,7 @@ PointCloudColorizer::PointCloudColorizer(std::string image_topic, std::string po
           _nh.subscribe<PointCloudWithoutColor>(pointcloud_topic, 10, &PointCloudColorizer::receivePointCloud, this)),
       _pointcloud_color_pub(_nh.advertise<PointCloudWithColor>(pointcloud_color_topic, 10))
 {
+  _camera_info = *ros::topic::waitForMessage<sensor_msgs::CameraInfo>(image_topic + "/camera_info", ros::Duration(0));
 }
 
 void PointCloudColorizer::receiveImage(const sensor_msgs::Image::ConstPtr &img)
@@ -19,29 +20,23 @@ void PointCloudColorizer::receiveImage(const sensor_msgs::Image::ConstPtr &img)
 
 void PointCloudColorizer::receivePointCloud(const PointCloudWithoutColor::ConstPtr &pc)
 {
-  for (const auto &img : _images)
-  {
-    auto colorized = PointCloudColorizer::colorize(*pc, img);
-
-    _pointcloud_color_pub.publish(colorized);
-  }
 }
 
-PointCloudColorizer::PointCloudWithColor PointCloudColorizer::colorize(const PointCloudWithoutColor &pc,
-                                                                       const sensor_msgs::Image &img)
+PointCloudWithColor PointCloudColorizer::colorize(
+    const PointCloudWithoutColor &pc,
+    const sensor_msgs::Image &img)
 {
-  PointCloudWithColor new_pc;
+  PointCloudWithColor colorized_pc;
 
-  for (auto point : pc.points)
-  {
-    pcl::PointXYZRGB p;
-    p.x = point.x;
-    p.y = point.y;
-    p.z = point.z;
-    new_pc.points.push_back(p);
-  }
+  return colorized_pc;
+}
 
-  return new_pc;
+pcl::PointXYZRGB PointCloudColorizer::colorize(
+    const pcl::PointXYZ &point,
+    const sensor_msgs::Image &img,
+    const sensor_msgs::CameraInfo& camera_info)
+{
+
 }
 
 int main(int argc, char *argv[])

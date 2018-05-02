@@ -17,7 +17,8 @@ find_package(catkin REQUIRED COMPONENTS
   actionlib
   sensor_msgs
   pcl_ros
-  pcl_conversions   
+  pcl_conversions
+  lemonbot_utils
 )
 
 ## System dependencies are found with CMake's conventions
@@ -121,6 +122,7 @@ catkin_package(
     sensor_msgs
     pcl_ros
     pcl_conversions
+    lemonbot_utils
 #  DEPENDS system_lib
 )
 
