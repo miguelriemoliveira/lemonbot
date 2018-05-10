@@ -5,5 +5,9 @@
         <arg name="camera" value="camera" />
         <arg name="device" value="$(arg port)" />
         <arg name="frame_id" value="lemonbot_camera_mount_link" />
+        <arg name="auto_white_balance" value="true" />
+        <arg name="white_balance" value="true" />
+        <arg name="exposure" value="false" />
+        <arg name="exposure_value" value="1.6" />
     </include>
 </launch>

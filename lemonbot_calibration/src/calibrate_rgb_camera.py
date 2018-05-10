@@ -9,13 +9,13 @@ import rospy
 import tf2_ros
 import tf
 
+from tf.transformations import euler_from_quaternion
+
 import geometry_msgs.msg
 from fiducial_msgs.msg import FiducialTransformArray
 
 from visp_hand2eye_calibration.msg import TransformArray
-from visp_hand2eye_calibration.msg import compute_effector_camera, reset
-
-class FiducialPoseBroadcaster
+from visp_hand2eye_calibration.srv import compute_effector_camera, reset
 
 class CalibrationHandler:
     
@@ -37,11 +37,11 @@ class CalibrationHandler:
             'compute_effector_camera', compute_effector_camera)
         
     def save_pose(self):
-        world2hand = tfBuffer.lookup_transform(
+        world2hand = self._tf_buffer.lookup_transform(
             self.world_frame,
             self.hand_frame,
             rospy.Time())
-        camera2object = tfBuffer.lookup_transform(
+        camera2object = self._tf_buffer.lookup_transform(
             self.camera_frame,
             self.object_frame,
             rospy.Time())
@@ -57,10 +57,10 @@ if __name__ == '__main__':
     rospy.init_node('hand2eye_rgb_camera_node')
 
     handler = CalibrationHandler(
-        world_frame='base_frame',
-        hand_frame='ptu_mount_link',
-        camera_frame='camera_base_link',
-        object_frame='object',
+        world_frame='lemonbot_base_link',
+        hand_frame='lemonbot_ptu_mount_link',
+        camera_frame='lemonbot_camera_mount_link',
+        object_frame='lemonbot_calibration_object',
     )
 
     print('ready...')
@@ -74,3 +74,11 @@ if __name__ == '__main__':
     results = handler.compute_calibration()
 
     print(results)
+
+    quaternion = (
+        results.effector_camera.rotation.x,
+        results.effector_camera.rotation.y,
+        results.effector_camera.rotation.z,
+        results.effector_camera.rotation.w)
+
+    print(euler_from_quaternion(quaternion))
