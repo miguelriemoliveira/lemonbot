@@ -13,9 +13,17 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
+  cv_bridge
+  image_geometry
 
   lemonbot_utils
 )
+
+FIND_PACKAGE(OpenMP)
+IF(OPENMP_FOUND)
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+ENDIF()
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -109,7 +117,15 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES lemonbot_pointcloud_pipeline
-  CATKIN_DEPENDS geometry_msgs pcl_ros roscpp sensor_msgs std_msgs lemonbot_utils
+  CATKIN_DEPENDS
+    geometry_msgs
+    pcl_ros
+    roscpp
+    sensor_msgs
+    std_msgs
+    cv_bridge
+    image_geometry
+    lemonbot_utils
 #  DEPENDS system_lib
 )
 

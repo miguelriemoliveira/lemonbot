@@ -4,5 +4,6 @@
     <include file="$(find flea3)/launch/single_node.launch">
         <arg name="camera" value="camera" />
         <arg name="device" value="$(arg port)" />
+        <arg name="frame_id" value="lemonbot_camera_mount_link" />
     </include>
 </launch>
