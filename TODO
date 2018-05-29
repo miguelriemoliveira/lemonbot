@@ -1,2 +1,5 @@
-- [] hostnames
-- [] dns .local (upnp)
+- [ ] Change the TF tree (put the laser as a child of the camera)
+- [ ] Find a manual calibration 
+- [ ] Create a automatic calibration for camera <-> laser with radlocc
+- [ ] Test calibrations (radlocc and hand2eye)
+- [ ] Create filter nodes (for point clouds and lasers)
