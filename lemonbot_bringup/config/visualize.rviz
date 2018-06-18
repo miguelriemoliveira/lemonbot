@@ -217,8 +217,6 @@ Visualization Manager:
         All Enabled: false
         lemonbot_base_link:
           Value: true
-        lemonbot_calibration_object:
-          Value: true
         lemonbot_camera_mount_link:
           Value: true
         lemonbot_laser_optical_frame:
@@ -246,8 +244,7 @@ Visualization Manager:
                 lemonbot_ptu_tilted_link:
                   lemonbot_ptu_mount_link:
                     lemonbot_camera_mount_link:
-                      lemonbot_calibration_object:
-                        {}
+                      {}
                     lemonbot_laser_optical_frame:
                       {}
       Update Interval: 0
@@ -292,10 +289,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.504796624
+      Pitch: 0.529796541
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.035429
+      Yaw: 4.84042931
     Saved: ~
 Window Geometry:
   Camera:

@@ -10,4 +10,5 @@
         <arg name="exposure" value="false" />
         <arg name="exposure_value" value="1.6" />
     </include>
+    <node type="image_proc" pkg="image_proc" ns="camera" name="image_proc" />
 </launch>

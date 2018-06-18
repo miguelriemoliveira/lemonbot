@@ -4,12 +4,9 @@ using namespace lemonbot::pointcloud_pipeline;
 
 PointCloudColorizer::PointCloudColorizer(std::string image_topic, std::string pointcloud_topic,
                                          std::string pointcloud_color_topic)
-    : _image_sub(
-          _nh.subscribe<cv_bridge::CvImage>(image_topic, 10, &PointCloudColorizer::receiveImage, this)),
-      _pointcloud_sub(
-          _nh.subscribe<PointCloudWithoutColor>(pointcloud_topic, 10, &PointCloudColorizer::receivePointCloud, this)),
-      _pointcloud_color_pub(_nh.advertise<PointCloudWithColor>(pointcloud_color_topic, 10)),
-      _tf_listener(_tf_buffer)
+    : _image_sub(_nh.subscribe<cv_bridge::CvImage>(image_topic, 10, &PointCloudColorizer::receiveImage, this)), _pointcloud_sub(
+                                                                                                                    _nh.subscribe<PointCloudWithoutColor>(pointcloud_topic, 10, &PointCloudColorizer::receivePointCloud, this)),
+      _pointcloud_color_pub(_nh.advertise<PointCloudWithColor>(pointcloud_color_topic, 10)), _tf_listener(_tf_buffer)
 {
   auto camera_info = *ros::topic::waitForMessage<sensor_msgs::CameraInfo>("/camera/camera_info", ros::Duration(0));
 
@@ -22,14 +19,12 @@ void PointCloudColorizer::receiveImage(const cv_bridge::CvImage::ConstPtr &img)
 
   geometry_msgs::TransformStamped transformStamped;
 
-  while (!_tf_buffer.canTransform("lemonbot_base_link",
-                                  "lemonbot_camera_mount_link",
-                                  img->header.stamp))
+  // TODO: de-hardcode frame ids
+
+  while (!_tf_buffer.canTransform("lemonbot_base_link", "lemonbot_camera_mount_link", img->header.stamp))
     ;
 
-  transformStamped = _tf_buffer.lookupTransform("lemonbot_base_link",
-                                                "lemonbot_camera_mount_link",
-                                                img->header.stamp);
+  transformStamped = _tf_buffer.lookupTransform("lemonbot_base_link", "lemonbot_camera_mount_link", img->header.stamp);
   tf::StampedTransform transform;
   tf::transformStampedMsgToTF(transformStamped, transform);
 
@@ -42,26 +37,35 @@ void PointCloudColorizer::receivePointCloud(const PointCloudWithoutColor::ConstP
 {
   ROS_INFO("received pointcloud");
 
-  for (const auto & [ img, tf ] : _image_transforms)
+  int i = 0;
+
+  for (const auto &[img, tf] : _image_transforms)
   {
     ROS_INFO("colorizing with image");
+    std::ostringstream file;
+    file << "pc" << i++ << ".pcd";
 
     const auto colorized_pc = colorize(*pc, img, tf);
+    pcl::io::savePCDFileBinary(file.str(), colorized_pc);
     _pointcloud_color_pub.publish(colorized_pc);
   }
 }
 
-PointCloudWithColor PointCloudColorizer::colorize(
-    const PointCloudWithoutColor &pc,
-    const cv_bridge::CvImage &img,
-    const tf::StampedTransform &tf)
+PointCloudWithColor PointCloudColorizer::colorize(const PointCloudWithoutColor &pc, const cv_bridge::CvImage &img,
+                                                  const tf::StampedTransform &tf)
 {
   PointCloudWithoutColor transformed;
-  pcl_ros::transformPointCloud(pc, transformed, tf);
+
+  // TODO validate
+  pcl_ros::transformPointCloud(pc, transformed, tf.inverse());
 
   PointCloudWithColor colorized_pc;
+  pcl_conversions::toPCL(img.header.stamp, colorized_pc.header.stamp);
+  colorized_pc.header.frame_id = pc.header.frame_id;
   colorized_pc.points.reserve(pc.points.size());
 
+  // TODO alpha possible
+  // create fake color
   pcl::PointXYZRGB nan_point;
   nan_point.x = NAN;
   nan_point.y = NAN;
@@ -84,25 +88,21 @@ PointCloudWithColor PointCloudColorizer::colorize(
     }
   }
 
-  pcl_ros::transformPointCloud(colorized_pc, colorized_pc, tf.inverse());
+  pcl_ros::transformPointCloud(colorized_pc, colorized_pc, tf);
 
   return colorized_pc;
 }
 
-std::optional<pcl::PointXYZRGB> PointCloudColorizer::colorize(
-    const pcl::PointXYZ &point,
-    const cv_bridge::CvImage &img)
+std::optional<pcl::PointXYZRGB> PointCloudColorizer::colorize(const pcl::PointXYZ &point, const cv_bridge::CvImage &img)
 {
   if (point.z < 0)
     return std::nullopt;
 
-  const auto[u, v] = _camera_model.project3dToPixel(cv::Point3d{point.x, point.y, point.z});
+  const auto [u, v] = _camera_model.project3dToPixel(cv::Point3d{point.x, point.y, point.z});
 
-  const auto[width, height] = _camera_model.fullResolution();
+  const auto [width, height] = _camera_model.fullResolution();
 
-  const bool within_range =
-      u >= 0 && u < width &&
-      v >= 0 && v < height;
+  const bool within_range = u >= 0 && u < height && v >= 0 && v < height;
   if (!within_range)
     return std::nullopt;
 
@@ -112,9 +112,9 @@ std::optional<pcl::PointXYZRGB> PointCloudColorizer::colorize(
   out.x = point.x;
   out.y = point.y;
   out.z = point.z;
-  out.r = color[0];
+  out.r = color[2];
   out.g = color[1];
-  out.b = color[2];
+  out.b = color[0];
 
   return out;
 }

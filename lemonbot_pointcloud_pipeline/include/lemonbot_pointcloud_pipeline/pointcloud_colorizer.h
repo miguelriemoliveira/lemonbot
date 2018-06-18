@@ -5,6 +5,7 @@
 #include <optional>
 #include <cmath>
 #include <tuple>
+#include <sstream>
 
 #include <ros/ros.h>
 
@@ -47,15 +48,15 @@ protected:
    */
   PointCloudWithColor colorize(
       const PointCloudWithoutColor &pc,
-      const cv_bridge::CvImage& img,
-      const tf::StampedTransform& tf);
+      const cv_bridge::CvImage &img,
+      const tf::StampedTransform &tf);
 
   /**
    * @brief colorizes a point based on it's projection on an image.
    */
   std::optional<pcl::PointXYZRGB> colorize(
       const pcl::PointXYZ &point,
-      const cv_bridge::CvImage& img);
+      const cv_bridge::CvImage &img);
 
 private:
   ros::NodeHandle _nh;
@@ -70,6 +71,6 @@ private:
   std::vector<std::pair<cv_bridge::CvImage, tf::StampedTransform>> _image_transforms;
   image_geometry::PinholeCameraModel _camera_model;
 };
-};
+}; // namespace lemonbot::pointcloud_pipeline
 
 #endif

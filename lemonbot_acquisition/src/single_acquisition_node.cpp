@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
   opts.laser_out_topic = laser_out_topic;
   opts.laser_in_topic = laser_in_topic;
   opts.camera_out_topic = "acquisition/images";
-  opts.camera_in_topic = "camera/image_raw";
+  opts.camera_in_topic = "/camera/image_color";
   opts.done_topic = done_topic;
   opts.pause = 1000ms;
 
