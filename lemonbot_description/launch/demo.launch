@@ -1,5 +1,7 @@
 <launch>
-    <include file="$(find lemonbot_description)/launch/load.launch" />
+    <include file="$(find lemonbot_description)/launch/load.launch">
+        <arg name="calibrated" value="true" />
+    </include>
 
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
         <param name="use_gui" value="true" />
