@@ -62,7 +62,7 @@ class DataSaver:
         })
 
     def save(self):
-        with open('laser.txt', 'w') as f:
+        with open(os.path.join(self._base_path, 'laser.txt'), 'w') as f:
             for scan in self._laserscans:
                 ranges = scan['ranges']
                 header = [
@@ -73,15 +73,12 @@ class DataSaver:
                     scan['range_unit_type'],
                     len(ranges)
                 ]
-                row = ' '.join(header) + ' ' + ' '.join(ranges) + '\n'
+                row = ' '.join(list(map(str,header))) + ' ' + ' '.join(list(map(str,ranges))) + '\n'
 
                 f.write(row)
 
-        with open('image_stamps.txt', 'w') as f:
+        with open(os.path.join(self._base_path, 'image_stamps.txt'), 'w') as f:
             for scan in self._images:
-                row = [
-                    scan['secs'],
-                    scan['nsecs'],
-                ]
+                row = str(scan['secs']) + '.' + str(scan['nsecs'])
 
-                f.write(' '.join(row) + '\n')
+                f.write(row + '\n')

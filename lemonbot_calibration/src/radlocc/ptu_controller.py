@@ -2,6 +2,9 @@ from actionlib import SimpleActionClient
 
 from flir_pantilt_d46.msg import PtuGotoAction, PtuGotoGoal
 
+from math import pi
+
+
 class PTUController:
     """
     PTUController is a very simple action server client for the PTU.
@@ -34,8 +37,8 @@ class PTUController:
         """
 
         goal = PtuGotoGoal(
-            pan=(pan * np.pi / 180),
-            pan_vel=1,
+            pan=(pan / pi * 180),
+            pan_vel=(vel / pi * 180),
             tilt=0,
             tilt_vel=1)
 
