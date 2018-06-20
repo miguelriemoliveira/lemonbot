@@ -38,6 +38,12 @@ class DataSaver:
         self._cv_bridge = CvBridge()
 
     def save_image(self, image_msg):
+        """
+        Saves an image to the radlocc dataset.
+
+        Saves the image to disk with the filename 'image_XXX.png' and the stamp to the 'image_stamps.txt' file.
+        """
+
         id = self._image_id
         self._image_id += 1
         image_path = os.path.join(self._base_path, 'image_{:03d}.png'.format(id))
@@ -51,6 +57,10 @@ class DataSaver:
         })
 
     def save_laser(self, laserscan):
+        """
+        Saves the laserscan to the file 'laser.txt'.
+        """
+
         stamp = laserscan.header.stamp
         self._laserscans.append({
             'timestamp': '{secs}.{nsecs}'.format(secs=stamp.secs, nsecs=stamp.nsecs),
@@ -62,6 +72,10 @@ class DataSaver:
         })
 
     def save(self):
+        """
+        Saves the files to the disk.
+        """
+
         with open(os.path.join(self._base_path, 'laser.txt'), 'w') as f:
             for scan in self._laserscans:
                 ranges = scan['ranges']

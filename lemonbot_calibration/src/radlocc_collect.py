@@ -15,10 +15,9 @@ if __name__ == '__main__':
     output = rospy.get_param('~output', '.')
 
     radlocc_collect_node = CollectNode(
-        pitch_range=np.linspace(angle_min, angle_max, steps),
         ptu_controller=PTUController("/SetPTUState"),
         data_saver=DataSaver('./radlocc_data'),
         image_topic="/camera/image_color",
         laserscan_topic="/laserscan")
 
-    radlocc_collect_node.run()
+    radlocc_collect_node.run(np.linspace(-np.pi / 10, np.pi/10, 3))

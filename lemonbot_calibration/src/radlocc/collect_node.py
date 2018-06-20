@@ -10,9 +10,7 @@ from data_saver import DataSaver
 
 class CollectNode:
 
-    def __init__(self, pitch_range, image_topic, laserscan_topic, ptu_controller, data_saver):
-
-        self._pitch_range = pitch_range
+    def __init__(self, image_topic, laserscan_topic, ptu_controller, data_saver):
 
         self._images = []
         self._laserscans = []
@@ -28,10 +26,10 @@ class CollectNode:
 
         self._data_saver = data_saver
 
-    def run(self):
-        self._ptu_controller.goto(self._pitch_range[0], 1)
+    def run(self, pan_range):
+        self._ptu_controller.goto(pan_range[0])
 
-        for pitch_angle in self._pitch_range:
+        for pitch_angle in pan_range:
             self._image_acquire = True
             while not self._image_acquire:
                 pass
@@ -41,8 +39,6 @@ class CollectNode:
             self._ptu_controller.goto(pitch_angle)
 
             self._laserscan_acquire = False
-
-        self._data_saver.save()
 
     def laser_callback(self, laser_msg):
         if self._laserscan_acquire:
