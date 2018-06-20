@@ -93,6 +93,8 @@ class DataSaver:
 
         with open(os.path.join(self._base_path, 'image_stamps.txt'), 'w') as f:
             for scan in self._images:
-                row = str(scan['secs']) + '.' + str(scan['nsecs'])
+                row = '{secs}.{nsecs} {secs}.{nsecs}'.format(
+                    secs=str(scan['secs']),
+                    nsecs=str(scan['nsecs'])
 
                 f.write(row + '\n')
