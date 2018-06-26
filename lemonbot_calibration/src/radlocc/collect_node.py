@@ -1,4 +1,5 @@
 from threading import Event
+from time import sleep
 
 import rospy
 
@@ -14,7 +15,9 @@ class CollectNode:
 
         self._images = []
         self._laserscans = []
-        self._image_acquire = False
+
+        self._image_acquire = Event()
+        self._image_acquire.set()
         self._laserscan_acquire = False
 
         self._image_subscriber = rospy.Subscriber(
@@ -27,26 +30,30 @@ class CollectNode:
         self._data_saver = data_saver
 
     def run(self, pan_range):
-        self._ptu_controller.goto(pan_range[0])
 
-        for pitch_angle in pan_range:
-            self._image_acquire = True
-            while not self._image_acquire:
-                pass
+        self._ptu_controller.goto(pan_range[0], 1)
 
-            self._laserscan_acquire = True
+        for pan in pan_range:
 
-            self._ptu_controller.goto(pitch_angle)
+            self.capture_laser(True)
+            self._ptu_controller.goto(pan)
+            self.capture_laser(False)
 
-            self._laserscan_acquire = False
+            self.capture_image()
+
+    def capture_image(self):
+        sleep(0.5)
+        self._image_acquire.clear()
+        self._image_acquire.wait()
+
+    def capture_laser(self, state):
+        self._laserscan_acquire = state
 
     def laser_callback(self, laser_msg):
         if self._laserscan_acquire:
-            print("received laserscan")
             self._data_saver.save_laser(laser_msg)
 
     def image_callback(self, image_msg):
-        if self._image_acquire:
-            self._image_acquire = False
-            print("received image")
+        if not self._image_acquire.isSet():
+            self._image_acquire.set()
             self._data_saver.save_image(image_msg)

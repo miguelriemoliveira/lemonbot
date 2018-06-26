@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import numpy as np
 
@@ -9,15 +10,17 @@ from radlocc import CollectNode, PTUController, DataSaver
 if __name__ == '__main__':
     rospy.init_node("radlocc_collect")
 
-    angle_min = rospy.get_param("~angle_min")
-    angle_max = rospy.get_param("~angle_max")
-    steps = rospy.get_param('~steps')
-    output = rospy.get_param('~output', '.')
+    ds = DataSaver('./radlocc_data')
 
     radlocc_collect_node = CollectNode(
         ptu_controller=PTUController("/SetPTUState"),
-        data_saver=DataSaver('./radlocc_data'),
+        data_saver=ds,
         image_topic="/camera/image_color",
         laserscan_topic="/laserscan")
 
-    radlocc_collect_node.run(np.linspace(-np.pi / 10, np.pi/10, 3))
+    angles = np.linspace(-0.05, 0.05, 2)
+
+    while raw_input("another one? ") != 'q':
+        radlocc_collect_node.run(angles)
+
+    ds.save()
