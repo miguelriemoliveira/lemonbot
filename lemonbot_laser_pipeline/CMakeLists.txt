@@ -161,6 +161,12 @@ target_link_libraries(laser_projector
   ${catkin_LIBRARIES}
 )
 
+add_executable(laser_angle_filter src/laser_angle_filter.cpp)
+
+target_link_libraries(laser_angle_filter
+  ${catkin_LIBRARIES}
+)
+
 
 #############
 ## Install ##

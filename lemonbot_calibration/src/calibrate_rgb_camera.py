@@ -17,8 +17,9 @@ from fiducial_msgs.msg import FiducialTransformArray
 from visp_hand2eye_calibration.msg import TransformArray
 from visp_hand2eye_calibration.srv import compute_effector_camera, reset
 
+
 class CalibrationHandler:
-    
+
     def __init__(self, world_frame, hand_frame, camera_frame, object_frame):
         self.world_frame = world_frame
         self.hand_frame = hand_frame
@@ -32,10 +33,10 @@ class CalibrationHandler:
             'world_effector', geometry_msgs.msg.Transform, queue_size=2)
         self._camera_object_pub = rospy.Publisher(
             'camera_object', geometry_msgs.msg.Transform, queue_size=2)
-        
+
         self._calibrator_service = rospy.ServiceProxy(
             'compute_effector_camera', compute_effector_camera)
-        
+
     def save_pose(self):
         world2hand = self._tf_buffer.lookup_transform(
             self.world_frame,
@@ -45,12 +46,13 @@ class CalibrationHandler:
             self.camera_frame,
             self.object_frame,
             rospy.Time())
-        
+
         self._world_effector_pub.publish(world2hand.transform)
         self._camera_object_pub.publish(camera2object.transform)
-    
+
     def compute_calibration(self):
         return self._calibrator_service()
+
 
 if __name__ == '__main__':
 

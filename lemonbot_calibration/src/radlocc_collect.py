@@ -13,14 +13,12 @@ if __name__ == '__main__':
     ds = DataSaver('./radlocc_data')
 
     radlocc_collect_node = CollectNode(
-        ptu_controller=PTUController("/SetPTUState"),
+        ptu_controller=None,
         data_saver=ds,
         image_topic="/camera/image_color",
         laserscan_topic="/laserscan")
 
-    angles = np.linspace(-0.05, 0.05, 2)
-
     while raw_input("another one? ") != 'q':
-        radlocc_collect_node.run(angles)
+        radlocc_collect_node.run()
 
     ds.save()

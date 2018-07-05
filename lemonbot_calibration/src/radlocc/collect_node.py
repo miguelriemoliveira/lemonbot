@@ -29,8 +29,14 @@ class CollectNode:
 
         self._data_saver = data_saver
 
-    def run(self, pan_range):
+    def run(self, pan_range=None):
 
+        if self._ptu_controller is None:
+            self._run_static()
+        else:
+            self._run_dynamic(pan_range)
+
+    def _run_dynamic(self, pan_range):
         self._ptu_controller.goto(pan_range[0], 1)
 
         for pan in pan_range:
@@ -40,6 +46,11 @@ class CollectNode:
             self.capture_laser(False)
 
             self.capture_image()
+
+    def _run_static(self):
+        self.capture_laser(True)
+        self.capture_image()
+        self.capture_laser(False)
 
     def capture_image(self):
         sleep(0.5)
