@@ -33,7 +33,7 @@ class DataSaver:
         self._laserscans = []
         self._images = []
 
-        self._image_id = 0
+        self._image_id = 1
 
         self._cv_bridge = CvBridge()
 
