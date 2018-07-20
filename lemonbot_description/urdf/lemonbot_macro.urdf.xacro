@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<robot 
-  xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:arg name="calibrated" default="false"/>
   <xacro:arg name="laser_calibration_file" default="" />
   <xacro:arg name="camera_calibration_file" default="" />
@@ -47,11 +46,20 @@
       <parent link="${prefix}_ptu_mount_link" />
       <child link="${prefix}_camera_mount_link" />
     </joint>
+
+    <!-- <link name="${prefix}_laser_mount_frame" /> -->
+
     <!-- joint: ptu_mount_link to laser_optical_frame  -->
     <joint name="{prefix}_camera_mount_link_to_laser_optical_frame" type="fixed">
       <origin xyz="${laser_calibration  ['xyz'][0]} ${laser_calibration['xyz'][1]} ${laser_calibration['xyz'][2]}" rpy="${laser_calibration['rpy'][0]} ${laser_calibration['rpy'][1]} ${laser_calibration['rpy'][2]}" />
       <parent link="${prefix}_camera_mount_link" />
       <child link="${prefix}_laser_optical_frame" />
     </joint>
+
+    <!-- <joint name="{prefix}_laser_mount_frame_to_laser_optical_frame" type="fixed">
+      <origin xyz="0 0 0" rpy="${-pi/2} ${-pi/2} 0" />
+      <parent link="${prefix}_laser_mount_frame" />
+      <child link="${prefix}_laser_optical_frame" />
+    </joint> -->
   </xacro:macro>
 </robot>

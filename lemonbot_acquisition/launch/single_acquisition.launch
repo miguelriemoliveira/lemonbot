@@ -19,20 +19,36 @@
         <param name="tilt_vel" value="$(arg tilt_vel)" />
         <param name="tilt_nsteps" value="$(arg tilt_nsteps)" />
     </node>
-    <node type="laser_projector" pkg="lemonbot_acquisition" name="projector">
+    <node type="laser_projector" pkg="lemonbot_laser_pipeline" name="projector">
         <remap from="input" to="registered" />
         <remap from="output" to="projected" />
     </node>
-    <node type="pointcloud_transformer" pkg="lemonbot_acquisition" name="transformer">
+    <node type="pointcloud_transformer" pkg="lemonbot_pointcloud_pipeline" name="transformer">
         <remap from="input" to="projected" />
         <remap from="output" to="transformed" />
     </node>
-    <node type="pointcloud_accumulator" pkg="lemonbot_acquisition" name="accumulator">
+
+    <node type="pointcloud_accumulator" pkg="lemonbot_pointcloud_pipeline" name="accumulator">
         <remap from="input" to="transformed" />
         <remap from="output" to="accumulator" />
     </node>
-    <node type="pointcloud_to_pcd" pkg="pcl_ros" name="saver">
+
+    <node type="pointcloud_colorizer" pkg="lemonbot_pointcloud_pipeline" name="colorizer">
+        <remap from="camera_info" to="/camera/camera_info" />
+        <remap from="images" to="acquisition/images" />
         <remap from="input" to="result" />
-        <param name="prefix" value="/home/lemonbot/data/vel_" />
+        <remap from="output" to="colorized" />
+    </node>
+
+    <node type="pointcloud_to_pcd" pkg="pcl_ros" name="raw_saver">
+        <remap from="input" to="result" />
+        <param name="prefix" value="/home/lemonbot/data/acquisition_" />
+    </node>
+
+    <node type="pointcloud_to_pcd" pkg="pcl_ros" name="color_saver">
+        <remap from="input" to="colorized" />
+        <param name="prefix" value="/home/lemonbot/data/colorized_" />
+        <param name="binary" value="true" />
+        <param name="compressed" value="true" />
     </node>
 </launch>

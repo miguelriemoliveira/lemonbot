@@ -67,13 +67,13 @@ int main(int argc, char *argv[])
   opts.camera_out_topic = "acquisition/images";
   opts.camera_in_topic = "/camera/image_color";
   opts.done_topic = done_topic;
-  opts.pause = 1000ms;
+  opts.pause = 2000ms;
 
   AcquisitionNode node(opts);
 
   node.start(params);
 
-  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
   return 0;
 }
