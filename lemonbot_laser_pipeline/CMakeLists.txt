@@ -167,6 +167,12 @@ target_link_libraries(laser_angle_filter
   ${catkin_LIBRARIES}
 )
 
+add_executable(laser_angle_tweak src/laser_angle_tweak.cpp)
+
+target_link_libraries(laser_angle_tweak
+  ${catkin_LIBRARIES}
+)
+
 
 #############
 ## Install ##

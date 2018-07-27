@@ -6,7 +6,7 @@ using namespace lemonbot::utils;
 using namespace std;
 
 AcquisitionNode::AcquisitionNode(Options &opts)
-  : _opts(opts), _ptu_client(opts.ptu_topic, true), _done_pub(_nh.advertise<std_msgs::Bool>(_opts.done_topic, 1))
+    : _opts(opts), _ptu_client(opts.ptu_topic, true), _done_pub(_nh.advertise<std_msgs::Bool>(_opts.done_topic, 1))
 {
   if (!_ptu_client.waitForServer(_opts.timeout))
   {
@@ -19,13 +19,13 @@ AcquisitionNode::AcquisitionNode(Options &opts)
 template <>
 void AcquisitionNode::startAcquisition<AcquisitionNode::Type::CONTINUOUS>(Params &params)
 {
-  InboundBuffer<sensor_msgs::Image> camera_buffer{ _opts.camera_in_topic };
+  InboundBuffer<sensor_msgs::Image> camera_buffer{_opts.camera_in_topic};
   auto camera_pub = _nh.advertise<sensor_msgs::Image>(_opts.camera_out_topic, 10);
 
   auto passthrough = Passthrough<sensor_msgs::LaserScan>(_opts.laser_in_topic, _opts.laser_out_topic);
 
   auto pan_delta = (params.pan.max - params.pan.min) / (params.pan.nsteps - 1);
-  auto tilt_delta = (params.tilt.max - params.tilt.min) / (params.tilt.nsteps - 1);
+  auto tilt_delta = params.tilt.nsteps > 1 ? (params.tilt.max - params.tilt.min) / (params.tilt.nsteps - 1) : 0.0f;
 
   for (int tilt_step = 0; tilt_step < params.tilt.nsteps; tilt_step++)
     for (int pan_step = 0; pan_step < params.pan.nsteps; pan_step++)
@@ -54,12 +54,12 @@ void AcquisitionNode::start(Params &params)
 
   switch (params.type)
   {
-    case Type::CONTINUOUS:
-      startAcquisition<Type::CONTINUOUS>(params);
-      break;
-    case Type::POINT2POINT:
-      startAcquisition<Type::POINT2POINT>(params);
-      break;
+  case Type::CONTINUOUS:
+    startAcquisition<Type::CONTINUOUS>(params);
+    break;
+  case Type::POINT2POINT:
+    startAcquisition<Type::POINT2POINT>(params);
+    break;
   }
 
   auto done = std_msgs::Bool{};

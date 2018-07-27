@@ -4,11 +4,9 @@ using namespace lemonbot::pointcloud_pipeline;
 
 PointCloudColorizer::PointCloudColorizer(std::string image_topic, std::string pointcloud_topic,
                                          std::string pointcloud_color_topic)
-  : _image_sub(_nh.subscribe<cv_bridge::CvImage>(image_topic, 10, &PointCloudColorizer::receiveImage, this))
-  , _pointcloud_sub(
-        _nh.subscribe<PointCloudWithoutColor>(pointcloud_topic, 10, &PointCloudColorizer::receivePointCloud, this))
-  , _pointcloud_color_pub(_nh.advertise<PointCloudWithColor>(pointcloud_color_topic, 10))
-  , _tf_listener(_tf_buffer)
+    : _image_sub(_nh.subscribe<cv_bridge::CvImage>(image_topic, 10, &PointCloudColorizer::receiveImage, this)), _pointcloud_sub(
+                                                                                                                    _nh.subscribe<PointCloudWithoutColor>(pointcloud_topic, 10, &PointCloudColorizer::receivePointCloud, this)),
+      _pointcloud_color_pub(_nh.advertise<PointCloudWithColor>(pointcloud_color_topic, 10)), _tf_listener(_tf_buffer)
 {
   auto camera_info = *ros::topic::waitForMessage<sensor_msgs::CameraInfo>("camera_info", ros::Duration(0));
 
@@ -43,17 +41,13 @@ void PointCloudColorizer::receivePointCloud(const PointCloudWithoutColor::ConstP
 
   int i = 0;
 
-  for (const auto & [ img, tf ] : _image_transforms)
+  for (const auto &[img, tf] : _image_transforms)
   {
     ROS_INFO("colorizing with image");
     std::ostringstream file;
     file << "/home/lemonbot/data/pc_" << i++ << ".pcd";
 
     const auto colorized_pc = colorize(*pc, img, tf);
-
-    auto saved = pcl::io::savePCDFileBinary(file.str(), colorized_pc);
-    if (!saved)
-      ROS_WARN("was not saved");
 
     _pointcloud_color_pub.publish(colorized_pc);
   }
@@ -106,9 +100,9 @@ std::optional<pcl::PointXYZRGB> PointCloudColorizer::colorize(const pcl::PointXY
   if (point.z < 0)
     return std::nullopt;
 
-  const auto[u, v] = _camera_model.project3dToPixel(cv::Point3d{ point.x, point.y, point.z });
+  const auto [u, v] = _camera_model.project3dToPixel(cv::Point3d{point.x, point.y, point.z});
 
-  const auto[width, height] = _camera_model.fullResolution();
+  const auto [width, height] = _camera_model.fullResolution();
 
   const bool within_range = u >= 0 && u < height && v >= 0 && v < height;
   if (!within_range)

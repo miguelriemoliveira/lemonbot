@@ -18,6 +18,7 @@
         <param name="tilt_max" value="$(arg tilt_max)" />
         <param name="tilt_vel" value="$(arg tilt_vel)" />
         <param name="tilt_nsteps" value="$(arg tilt_nsteps)" />
+        <remap from="laserscan" to="calibrated_laserscan" />
     </node>
     <node type="laser_projector" pkg="lemonbot_laser_pipeline" name="projector">
         <remap from="input" to="registered" />
@@ -51,4 +52,5 @@
         <param name="binary" value="true" />
         <param name="compressed" value="true" />
     </node>
+
 </launch>
