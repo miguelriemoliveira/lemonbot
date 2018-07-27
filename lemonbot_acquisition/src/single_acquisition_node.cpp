@@ -11,8 +11,8 @@ using namespace lemonbot;
 using namespace lemonbot::acquisition;
 
 const auto ptu_topic = "/SetPTUState";
-const auto laser_in_topic = "/laserscan";
-const auto laser_out_topic = "/registered";
+const auto laser_in_topic = "laserscan";
+const auto laser_out_topic = "acquisition/laserscan";
 const auto done_topic = "/done";
 
 AcquisitionNode::Params get_params(ros::NodeHandle nh)
