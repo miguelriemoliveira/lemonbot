@@ -1,5 +1,5 @@
 <launch>
-    <arg name="type" />
+    <arg name="type" default="continuous" />
     <arg name="pan_min" />
     <arg name="pan_max" />
     <arg name="pan_vel" />
@@ -19,7 +19,4 @@
         <param name="tilt_vel" value="$(arg tilt_vel)" />
         <param name="tilt_nsteps" value="$(arg tilt_nsteps)" />
     </node>
-
-
-
 </launch>
