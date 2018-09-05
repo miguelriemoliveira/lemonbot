@@ -11,8 +11,7 @@
     <arg name="port" value="$(arg laser_port)" />
   </include>
   <group>
-    <include file="$(find lemonbot_bringup)/launch/load_urdf.launch">
-      <arg name="calibrated" value="$(arg calibrated)" />
+    <include file="$(find lemonbot_description)/launch/load.launch">
     </include>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
   </group>
