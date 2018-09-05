@@ -1,7 +1,4 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="calibrated" default="false" />
-    <arg name="camera_calibration_file" default="$(find lemonbot_calibration)/calibration/camera_calibration.yaml" />
-    <arg name="laser_calibration_file" default="$(find lemonbot_calibration)/calibration/laser_calibration.yaml" />
-    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find lemonbot_description)/urdf/lemonbot.urdf.xacro' calibrated:=$(arg calibrated) camera_calibration_file:=$(arg camera_calibration_file) laser_calibration_file:=$(arg laser_calibration_file)" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find lemonbot_description)/urdf/lemonbot.urdf.xacro" />
 </launch>

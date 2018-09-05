@@ -1,11 +1,14 @@
 <launch>
-    <include file="$(find lemonbot_description)/launch/load.launch">
-        <arg name="calibrated" value="true" />
-    </include>
+    <arg name="manual_control" default="false" />
 
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-        <param name="use_gui" value="true" />
-    </node>
+    <include file="$(find lemonbot_description)/launch/load.launch" />
+
+    <group if="$(arg manual_control)">
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+            <param name="use_gui" value="true" />
+        </node>
+    </group>
+
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
     <node name="rviz" pkg="rviz" type="rviz" required="true" />
 </launch>

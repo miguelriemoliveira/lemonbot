@@ -1,7 +1,0 @@
-<launch>
-    <node pkg="joint_state_publisher" type="joint_state_publisher" name="manual_joint_control">
-        <param name="use_gui" value="true" />
-        <remap from="/joint_states" to="/ptu/cmd" />
-        <param name="publish_default_velocities" value="true" />
-    </node>
-</launch>
