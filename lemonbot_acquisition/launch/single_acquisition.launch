@@ -8,7 +8,7 @@
     <arg name="tilt_max" />
     <arg name="tilt_vel" />
     <arg name="tilt_nsteps" />
-    <node type="single_acquisition_node" pkg="lemonbot_acquisition" name="acquisition" required="true">
+    <node type="single_acquisition_node" pkg="lemonbot_acquisition" name="acquisition" required="true" ns="acquisition">
         <param name="type" value="$(arg type)" />
         <param name="pan_min" value="$(arg pan_min)" />
         <param name="pan_max" value="$(arg pan_max)" />

@@ -11,9 +11,11 @@ using namespace lemonbot;
 using namespace lemonbot::acquisition;
 
 const auto ptu_topic = "/SetPTUState";
-const auto laser_in_topic = "laserscan";
-const auto laser_out_topic = "acquisition/laserscan";
-const auto done_topic = "/done";
+const auto laser_in_topic = "/laserscan";
+const auto laser_out_topic = "laserscan";
+const auto image_in_topic = "/camera/image_color";
+const auto image_out_topic = "images";
+const auto done_topic = "done";
 
 AcquisitionNode::Params get_params(ros::NodeHandle nh)
 {
@@ -64,8 +66,8 @@ int main(int argc, char *argv[])
   opts.ptu_topic = ptu_topic;
   opts.laser_out_topic = laser_out_topic;
   opts.laser_in_topic = laser_in_topic;
-  opts.camera_out_topic = "acquisition/images";
-  opts.camera_in_topic = "/camera/image_color";
+  opts.camera_out_topic = image_out_topic;
+  opts.camera_in_topic = image_in_topic;
   opts.done_topic = done_topic;
   opts.pause = 2000ms;
 
