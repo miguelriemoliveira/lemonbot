@@ -23,7 +23,7 @@
     <xacro:ptu_d46 name="${prefix}ptu" />
 
     <!-- macro: sick_lms1xx -->
-    <xacro:sick_lms1xx frame="${prefix}laser_optical_frame" />
+    <xacro:sick_lms1xx frame="${prefix}laser_optical_link" />
 
     <!-- joints -->
     <!-- joint: base_link to ptu_joint -->
@@ -39,13 +39,13 @@
       <child link="${prefix}camera_mount_link" />
     </joint>
 
-    <!-- joint: ptu_mount_link to laser_optical_frame  -->
+    <!-- joint: ptu_mount_link to laser_optical_link  -->
     <joint name="{prefix}ptu_mount_link_to_{prefix}laser_optical_link_joint" type="fixed">
       <origin
         xyz="-0.00862729  0.11007474  0.08132132"
         rpy="2.23239 -1.54198 -0.64552" />
       <parent link="${prefix}ptu_mount_link" />
-      <child link="${prefix}laser_optical_frame" />
+      <child link="${prefix}laser_optical_link" />
     </joint>
 
   </xacro:macro>

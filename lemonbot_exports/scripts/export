@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+
+from glob import glob
+from os import mkdir
+from os.path import join
+import rospy
+from lemonbot_exports import LemonbotExporter
+
+if __name__ == '__main__':
+
+    rospy.init_node("lemonbot_exporter")
+
+    capture_dir = rospy.get_param("capture_dir")
+
+    acquisitions = glob(join(capture_dir, "acquisition[0-9]*"))
+
+    acquisition_dir = join(capture_dir, "acquisition{:03d}".format(len(acquisitions)))    
+
+    mkdir(acquisition_dir)
+
+    image_topic = "images"
+    laserscan_topic = "laserscan"
+
+    frames = {
+        'base_link': rospy.get_param("~base_link"),
+        'ptu_mount_link': rospy.get_param("~ptu_mount_link"),
+        'camera_link': rospy.get_param("~camera_link"),
+        'laser_link': rospy.get_param("~laser_link"),
+    }
+
+    exporter = LemonbotExporter(image_topic, laserscan_topic, frames)
+
+    def save_everything():
+        exporter.save(acquisition_dir)
+        print("finishing !!!")
+
+    rospy.on_shutdown(save_everything)
+
+    rospy.spin()
